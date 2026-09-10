@@ -64,7 +64,7 @@ Para cada tarea:
 - **Verificación:** TypeScript detecta estados inválidos.
 - **Depende de:** T05.
 
-### T07. Definir constantes de reglas
+### T07. [x] Definir constantes de reglas
 
 - **Objetivo:** centralizar dimensiones, velocidades, duración del escudo y puntuación objetivo.
 - **Conceptos:** configuración y reglas explícitas.
