@@ -180,7 +180,7 @@ Para cada tarea:
 - **Verificación:** la posición central se respeta después de puntuar.
 - **Depende de:** T19.
 
-### T21. Implementar victoria y finalización
+### T21. [x] Implementar victoria y finalización
 
 - **Objetivo:** terminar la partida al alcanzar 7 puntos y dejar definida la regla de empate.
 - **Conceptos:** máquina de estados y condición terminal.

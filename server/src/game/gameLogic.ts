@@ -2,7 +2,8 @@ import {
   BALL_START_SPEED_X,
   BALL_START_SPEED_Y,
   COURT_HEIGHT,
-  COURT_WIDTH
+  COURT_WIDTH,
+  WINNING_SCORE
 } from "./constants.js";
 import type { GameState, MoveAction, PaddleState } from "./types.js";
 
@@ -259,9 +260,40 @@ function scorePointIfNeeded(game: GameState): GameState {
   return resetBallAfterPoint(gameWithPoint, 1);
 }
 
+// ===== VICTORY AND FINISH =====
+
+function finishGameIfNeeded(game: GameState): GameState {
+  if (game.player.score >= WINNING_SCORE) {
+    return {
+      ...game,
+      status: "finished",
+      winner: "player",
+      message: "Gano el jugador.",
+      updatedAt: new Date().toISOString()
+    };
+  }
+
+  if (game.computer.score >= WINNING_SCORE) {
+    return {
+      ...game,
+      status: "finished",
+      winner: "computer",
+      message: "Gano la computadora.",
+      updatedAt: new Date().toISOString()
+    };
+  }
+
+  return game;
+}
+
 // ===== TICK / ONE GAME UPDATE =====
 
 export function tickGame(game: GameState): GameState {
+  // If the game already ended, a tick should not move anything.
+  if (game.status === "finished") {
+    return game;
+  }
+
   // One tick is one small update of the game.
   // First the computer reacts to the current ball position.
   const gameAfterComputerMove = moveComputerPaddle(game);
@@ -270,5 +302,8 @@ export function tickGame(game: GameState): GameState {
   const gameAfterBallMove = moveBall(gameAfterComputerMove);
 
   // Finally, if the ball left a side of the court, add one point.
-  return scorePointIfNeeded(gameAfterBallMove);
+  const gameAfterScoring = scorePointIfNeeded(gameAfterBallMove);
+
+  // If a score reached the winning number, finish the game and store the winner.
+  return finishGameIfNeeded(gameAfterScoring);
 }
