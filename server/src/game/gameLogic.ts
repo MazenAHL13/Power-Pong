@@ -101,3 +101,19 @@ export function moveComputerPaddle(game: GameState): GameState {
     updatedAt: new Date().toISOString()
   };
 }
+
+export function moveBall(game: GameState): GameState {
+  const ball = game.ball;
+
+  return {
+    ...game,
+    ball: {
+      ...ball,
+      position: {
+        x: ball.position.x + ball.velocity.x,
+        y: ball.position.y + ball.velocity.y
+      }
+    },
+    updatedAt: new Date().toISOString()
+  };
+}

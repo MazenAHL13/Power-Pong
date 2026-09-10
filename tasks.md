@@ -132,7 +132,7 @@ Para cada tarea:
 
 ## Fase 3: Física y reglas
 
-### T15. Implementar el movimiento de la pelota
+### T15. [x] Implementar el movimiento de la pelota
 
 - **Objetivo:** actualizar la posición usando velocidad y dirección.
 - **Conceptos:** coordenadas, vectores simples y tick.
