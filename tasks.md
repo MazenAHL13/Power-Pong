@@ -56,7 +56,7 @@ Para cada tarea:
 
 ## Fase 1: Modelo y contrato
 
-### T06. Definir los tipos de la partida
+### T06. [x] Definir los tipos de la partida
 
 - **Objetivo:** crear los tipos TypeScript de `GameState`, pelota, paletas, poderes, cápsulas y competidores.
 - **Conceptos:** interfaces, uniones literales y composición de tipos.
