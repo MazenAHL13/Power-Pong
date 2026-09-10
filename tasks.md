@@ -72,7 +72,7 @@ Para cada tarea:
 - **Verificación:** cambiar una constante modifica el comportamiento esperado.
 - **Depende de:** T06.
 
-### T08. Crear el estado inicial
+### T08. [x] Crear el estado inicial
 
 - **Objetivo:** representar una partida en estado `ready`.
 - **Conceptos:** estado inicial y valores por defecto.
