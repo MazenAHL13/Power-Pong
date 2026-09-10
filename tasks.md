@@ -248,28 +248,28 @@ Para cada tarea:
 - **Verificación:** iniciar y consultar usan las rutas correctas.
 - **Depende de:** T09-T11.
 
-### T29. [x] Crear la pantalla de inicio
+### T29. [x] Crear el control de inicio
 
-- **Objetivo:** permitir iniciar una partida desde la interfaz.
+- **Objetivo:** permitir iniciar una partida desde un boton sobre la cancha.
 - **Conceptos:** eventos, estado de carga y feedback.
-- **Resultado:** el botón llama al backend y muestra la respuesta.
-- **Verificación:** la interfaz cambia a estado de juego.
+- **Resultado:** el botón llama al backend y desaparece cuando la partida esta jugando.
+- **Verificación:** la cancha permanece visible y el estado cambia a juego.
 - **Depende de:** T28.
 
 ### T30. [x] Renderizar la cancha
 
-- **Objetivo:** mostrar pelota, paletas, límites, instrucciones visibles y recursos visuales del juego.
+- **Objetivo:** mostrar pelota, paletas, limites y capsulas sobre una cancha de pantalla completa.
 - **Conceptos:** renderizado basado en estado y CSS propio.
-- **Resultado:** la cancha ocupa el área visible del navegador e integra escenario, controles, marcador y estado.
+- **Resultado:** la cancha ocupa el area visible del navegador y es la pantalla principal.
 - **Verificación:** los elementos aparecen en posiciones correctas.
 - **Depende de:** T29.
 
-### T31. Renderizar marcador y estado
+### T31. [x] Renderizar marcador y resultado
 
-- **Objetivo:** mostrar puntajes, estado, ganador y mensajes.
+- **Objetivo:** mostrar el marcador centrado arriba y el resultado cuando exista ganador.
 - **Conceptos:** componentes presentacionales y feedback accesible.
-- **Resultado:** ningún estado importante depende de la consola.
-- **Verificación:** cambiar el fixture del estado cambia la UI.
+- **Resultado:** el puntaje y el final de partida son visibles sin salir de la cancha.
+- **Verificación:** cambiar puntajes o ganador en el estado cambia la UI.
 - **Depende de:** T30.
 
 ### T32. Renderizar poderes y temporizadores
@@ -316,7 +316,7 @@ Para cada tarea:
 
 ### T37. Crear E2E de inicio
 
-- **Objetivo:** comprobar que la pantalla inicial carga y permite iniciar.
+- **Objetivo:** comprobar que la cancha carga y el boton permite iniciar.
 - **Verificación:** prueba headless en navegador real.
 - **Depende de:** T29.
 

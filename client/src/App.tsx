@@ -59,6 +59,13 @@ function App() {
     }
   }
 
+  const resultText =
+    game?.winner === "player"
+      ? "Gano el jugador"
+      : game?.winner === "computer"
+        ? "Gano la computadora"
+        : null;
+
   return (
     <main className="app-shell">
       <section className="game-screen" aria-label="Power Pong Arena">
@@ -112,9 +119,11 @@ function App() {
           )}
         </div>
 
-        <p className="score-line">
-          {game === null ? "0 - 0" : `${game.player.score} - ${game.computer.score}`}
-        </p>
+        <div className="scoreboard" aria-live="polite">
+          <span>{game?.player.label ?? "Jugador"}</span>
+          <strong>{game === null ? "0 - 0" : `${game.player.score} - ${game.computer.score}`}</strong>
+          <span>{game?.computer.label ?? "Computadora"}</span>
+        </div>
 
         {game?.status !== "playing" && (
           <button
@@ -127,6 +136,7 @@ function App() {
           </button>
         )}
 
+        {resultText !== null && <p className="result-line">{resultText}</p>}
         {error !== null && <p className="error-message">{error}</p>}
       </section>
     </main>
