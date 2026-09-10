@@ -280,7 +280,7 @@ Para cada tarea:
 - **Verificación:** probar que una cápsula `shield` y una cápsula `turbo` se ven con colores distintos.
 - **Depende de:** T31 y T25-T26.
 
-### T33. Capturar controles del teclado
+### T33. [x] Capturar controles del teclado
 
 - **Objetivo:** traducir `W` y `S` en acciones del jugador.
 - **Conceptos:** eventos de teclado y ciclo de vida de efectos.

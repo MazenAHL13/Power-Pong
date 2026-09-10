@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getGameState, startGame } from "./api";
+import { getGameState, movePlayer, startGame } from "./api";
 import type { GameState } from "../../shared/types";
 import "./styles/app.css";
 
@@ -39,6 +39,46 @@ function App() {
       shouldIgnoreResponse = true;
     };
   }, []);
+
+  useEffect(() => {
+    async function handleKeyDown(event: KeyboardEvent) {
+      if (game?.status !== "playing") {
+        return;
+      }
+
+      const direction =
+        event.key.toLowerCase() === "w"
+          ? "up"
+          : event.key.toLowerCase() === "s"
+            ? "down"
+            : null;
+
+      if (direction === null) {
+        return;
+      }
+
+      event.preventDefault();
+      setError(null);
+
+      try {
+        const response = await movePlayer(direction);
+        setGame(response.game);
+      } catch (caughtError) {
+        const message =
+          caughtError instanceof Error
+            ? caughtError.message
+            : "No se pudo mover la paleta.";
+
+        setError(message);
+      }
+    }
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [game?.status]);
 
   async function handleStartGame() {
     setIsStarting(true);
