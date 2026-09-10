@@ -3,6 +3,7 @@ import {
   BALL_START_SPEED_Y,
   CAPSULE_RADIUS,
   CAPSULE_SPAWN_CHANCE,
+  CAPSULE_SPEED,
   COURT_HEIGHT,
   COURT_WIDTH,
   PADDLE_SHIELD_HEIGHT,
@@ -504,6 +505,42 @@ export function collectCapsuleIfNeeded(game: GameState): GameState {
   return game;
 }
 
+function moveCapsule(game: GameState): GameState {
+  if (game.capsule === null) {
+    return game;
+  }
+
+  let nextX = game.capsule.position.x + game.capsule.velocity.x;
+  let nextVelocityX = game.capsule.velocity.x;
+
+  // If the capsule touches a side wall, keep it inside and send it back.
+  if (nextX - game.capsule.radius < 0) {
+    nextX = game.capsule.radius;
+    nextVelocityX = Math.abs(game.capsule.velocity.x);
+  }
+
+  if (nextX + game.capsule.radius > COURT_WIDTH) {
+    nextX = COURT_WIDTH - game.capsule.radius;
+    nextVelocityX = -Math.abs(game.capsule.velocity.x);
+  }
+
+  return {
+    ...game,
+    capsule: {
+      ...game.capsule,
+      position: {
+        ...game.capsule.position,
+        x: nextX
+      },
+      velocity: {
+        ...game.capsule.velocity,
+        x: nextVelocityX
+      }
+    },
+    updatedAt: new Date().toISOString()
+  };
+}
+
 export function spawnCapsuleIfNeeded(
   game: GameState,
   random: RandomSource = Math.random
@@ -525,6 +562,7 @@ export function spawnCapsuleIfNeeded(
   }
 
   const type: PowerType = random() < 0.5 ? "shield" : "turbo";
+  const direction = random() < 0.5 ? -1 : 1;
 
   return {
     ...game,
@@ -532,6 +570,10 @@ export function spawnCapsuleIfNeeded(
       id: `capsule-${Date.now()}`,
       type,
       position: randomCourtPosition(random),
+      velocity: {
+        x: direction * CAPSULE_SPEED,
+        y: 0
+      },
       radius: CAPSULE_RADIUS
     },
     message: `Capsula ${type} aparecio.`,
@@ -563,8 +605,11 @@ export function tickGame(game: GameState): GameState {
   // If a score reached the winning number, finish the game and store the winner.
   const gameAfterVictoryCheck = finishGameIfNeeded(gameAfterScoring);
 
+  // Capsules move horizontally, either toward the player or toward the computer.
+  const gameAfterCapsuleMove = moveCapsule(gameAfterVictoryCheck);
+
   // If a paddle touches an active capsule, that side receives the power.
-  const gameAfterCapsulePickup = collectCapsuleIfNeeded(gameAfterVictoryCheck);
+  const gameAfterCapsulePickup = collectCapsuleIfNeeded(gameAfterCapsuleMove);
 
   // If there is no active capsule, maybe create one for players to collect.
   return spawnCapsuleIfNeeded(gameAfterCapsulePickup);

@@ -41,6 +41,7 @@ export interface CapsuleState {
   id: string;
   type: PowerType;
   position: Point;
+  velocity: Point;
   radius: number;
 }
 

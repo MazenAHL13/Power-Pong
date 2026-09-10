@@ -1,6 +1,7 @@
 import {
   BALL_START_SPEED_X,
   CAPSULE_RADIUS,
+  CAPSULE_SPEED,
   COURT_HEIGHT,
   COURT_WIDTH,
   WINNING_SCORE
@@ -57,6 +58,10 @@ export function applyTestScenario(
           x: game.player.paddle.position.x + game.player.paddle.width / 2,
           y: game.player.paddle.position.y + game.player.paddle.height / 2
         },
+        velocity: {
+          x: -CAPSULE_SPEED,
+          y: 0
+        },
         radius: CAPSULE_RADIUS
       },
       message: "Escenario de prueba: capsula del jugador.",
@@ -74,6 +79,10 @@ export function applyTestScenario(
         position: {
           x: game.computer.paddle.position.x + game.computer.paddle.width / 2,
           y: game.computer.paddle.position.y + game.computer.paddle.height / 2
+        },
+        velocity: {
+          x: CAPSULE_SPEED,
+          y: 0
         },
         radius: CAPSULE_RADIUS
       },
