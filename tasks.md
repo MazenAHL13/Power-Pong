@@ -14,7 +14,7 @@ Para cada tarea:
 
 ## Fase 0: Preparación
 
-### T01. Convertir el TRD en checklist
+### T01. [x] Convertir el TRD en checklist
 
 - **Objetivo:** transformar los requisitos de `TRD.md` y del PDF del examen en una lista verificable.
 - **Conceptos:** requisitos funcionales y no funcionales.
@@ -22,7 +22,7 @@ Para cada tarea:
 - **Revisión:** cada requisito del TRD y del PDF aparece en una categoría.
 - **Depende de:** ninguna.
 
-### T02. Elegir la estructura del proyecto
+### T02. [x] Elegir la estructura del proyecto
 
 - **Objetivo:** crear la estructura `client`, `server`, `tests`, `docs` y `.github`.
 - **Conceptos:** separación frontend/backend.
@@ -30,7 +30,7 @@ Para cada tarea:
 - **Revisión:** cada carpeta tiene una responsabilidad clara.
 - **Depende de:** T01.
 
-### T03. Inicializar React con TypeScript
+### T03. [x] Inicializar React con TypeScript
 
 - **Objetivo:** preparar el cliente con Vite y React.
 - **Conceptos:** entrypoint, JSX, TypeScript y build.
@@ -38,7 +38,7 @@ Para cada tarea:
 - **Verificación:** ejecutar el script de desarrollo y `build` del cliente.
 - **Depende de:** T02.
 
-### T04. Inicializar Express con TypeScript
+### T04. [x] Inicializar Express con TypeScript
 
 - **Objetivo:** preparar el servidor HTTP.
 - **Conceptos:** Express, servidor, puerto y compilación TypeScript.
@@ -46,7 +46,7 @@ Para cada tarea:
 - **Verificación:** consultar la ruta con el navegador o `curl`.
 - **Depende de:** T02.
 
-### T05. Configurar scripts de calidad
+### T05. [x] Configurar scripts de calidad
 
 - **Objetivo:** definir scripts de desarrollo, build, lint y start.
 - **Conceptos:** scripts npm y automatización.
