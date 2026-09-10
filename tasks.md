@@ -256,7 +256,7 @@ Para cada tarea:
 - **Verificación:** la interfaz cambia a estado de juego.
 - **Depende de:** T28.
 
-### T30. Renderizar la cancha
+### T30. [x] Renderizar la cancha
 
 - **Objetivo:** mostrar pelota, paletas, límites, instrucciones visibles y recursos visuales del juego.
 - **Conceptos:** renderizado basado en estado y CSS propio.
