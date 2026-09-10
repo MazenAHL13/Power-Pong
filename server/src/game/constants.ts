@@ -21,7 +21,7 @@ export const TURBO_MULTIPLIER = 1.6;
 
 // Computer movement is intentionally slower than perfect tracking.
 export const COMPUTER_PADDLE_SPEED = 8;
-export const COMPUTER_REACTION_CHANCE = 0.45;
+export const COMPUTER_REACTION_CHANCE = 0.65;
 
 // Power and capsule rules.
 export const SHIELD_DURATION_MS = 30_000;
