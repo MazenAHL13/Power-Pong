@@ -1,4 +1,4 @@
-import { COURT_HEIGHT } from "./constants.js";
+import { COURT_HEIGHT, COURT_WIDTH } from "./constants.js";
 import type { GameState, MoveAction, PaddleState } from "./types.js";
 
 interface MoveResult {
@@ -185,11 +185,70 @@ export function moveBall(game: GameState): GameState {
   };
 }
 
+function scorePointIfNeeded(game: GameState): GameState {
+  const ball = game.ball;
+  const ballExitedLeft = ball.position.x + ball.radius < 0;
+  const ballExitedRight = ball.position.x - ball.radius > COURT_WIDTH;
+
+  if (!ballExitedLeft && !ballExitedRight) {
+    return game;
+  }
+
+  // If the ball leaves the left side, the computer scores.
+  if (ballExitedLeft) {
+    return {
+      ...game,
+      computer: {
+        ...game.computer,
+        score: game.computer.score + 1
+      },
+      ball: {
+        ...ball,
+        position: {
+          ...ball.position,
+          x: -ball.radius
+        },
+        velocity: {
+          ...ball.velocity,
+          x: 0
+        }
+      },
+      message: "Punto para la computadora.",
+      updatedAt: new Date().toISOString()
+    };
+  }
+
+  // If the ball leaves the right side, the player scores.
+  return {
+    ...game,
+    player: {
+      ...game.player,
+      score: game.player.score + 1
+    },
+    ball: {
+      ...ball,
+      position: {
+        ...ball.position,
+        x: COURT_WIDTH + ball.radius
+      },
+      velocity: {
+        ...ball.velocity,
+        x: 0
+      }
+    },
+    message: "Punto para el jugador.",
+    updatedAt: new Date().toISOString()
+  };
+}
+
 export function tickGame(game: GameState): GameState {
   // One tick is one small update of the game.
   // First the computer reacts to the current ball position.
   const gameAfterComputerMove = moveComputerPaddle(game);
 
   // Then the ball moves and handles wall/paddle bounces.
-  return moveBall(gameAfterComputerMove);
+  const gameAfterBallMove = moveBall(gameAfterComputerMove);
+
+  // Finally, if the ball left a side of the court, add one point.
+  return scorePointIfNeeded(gameAfterBallMove);
 }

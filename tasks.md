@@ -164,7 +164,7 @@ Para cada tarea:
 - **Verificación:** la respuesta contiene el estado actualizado.
 - **Depende de:** T14, T16 y T17.
 
-### T19. Implementar puntos
+### T19. [x] Implementar puntos
 
 - **Objetivo:** detectar cuando la pelota sale por un lateral y sumar al rival.
 - **Conceptos:** reglas de puntuación y reinicio parcial.
