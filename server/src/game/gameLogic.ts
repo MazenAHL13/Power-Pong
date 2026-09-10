@@ -26,6 +26,20 @@ function keepInsideCourt(y: number, paddleHeight: number): number {
 // ===== PLAYER MOVEMENT =====
 
 export function movePlayerPaddle(game: GameState, action: MoveAction): MoveResult {
+  // After someone wins, the player cannot keep moving the paddle.
+  if (game.status === "finished") {
+    const message = "La partida ya termino.";
+
+    return {
+      ok: false,
+      message,
+      game: {
+        ...game,
+        message
+      }
+    };
+  }
+
   // Get the human player's paddle from the current game.
   const paddle = game.player.paddle;
 

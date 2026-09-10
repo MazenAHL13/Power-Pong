@@ -188,7 +188,7 @@ Para cada tarea:
 - **Verificación:** un estado terminado no vuelve a `playing` con un tick y no existe un resultado ambiguo.
 - **Depende de:** T19.
 
-### T22. Bloquear acciones después de terminar
+### T22. [x] Bloquear acciones después de terminar
 
 - **Objetivo:** impedir movimientos y poderes después de la victoria.
 - **Conceptos:** guardas de estado y acciones inválidas.
