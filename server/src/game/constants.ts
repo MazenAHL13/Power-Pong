@@ -15,7 +15,7 @@ export const COMPUTER_PADDLE_X = COURT_WIDTH - PLAYER_PADDLE_X - PADDLE_WIDTH;
 
 // Ball rules.
 export const BALL_RADIUS = 10;
-export const BALL_START_SPEED_X = 7;
+export const BALL_START_SPEED_X = 20;
 export const BALL_START_SPEED_Y = 4;
 export const TURBO_MULTIPLIER = 1.6;
 

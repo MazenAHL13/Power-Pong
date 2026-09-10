@@ -304,17 +304,17 @@ Para cada tarea:
 - **Verificación:** simular error HTTP y reiniciar desde resultado.
 - **Depende de:** T29-T34.
 
-### T36. Revisar responsive y accesibilidad
+### T36. No requerido: responsive y accesibilidad extra
 
-- **Objetivo:** asegurar uso cómodo en escritorio y móvil.
-- **Conceptos:** CSS responsive, foco, etiquetas, contraste y uso significativo de pantalla.
-- **Resultado:** controles, instrucciones y estados son legibles y navegables.
-- **Verificación:** revisar tamaños de pantalla y navegación por teclado.
+- **Objetivo:** no implementar trabajo extra fuera del alcance del proyecto.
+- **Conceptos:** alcance del proyecto y simplicidad.
+- **Resultado:** se mantiene la pantalla simple exigida: cancha completa, marcador, boton de inicio/reinicio y mensajes necesarios.
+- **Verificación:** no se agregan paneles, instrucciones ni ajustes responsive que no pide el proyecto.
 - **Depende de:** T30-T35.
 
 ## Fase 6: Pruebas y documentación
 
-### T37. Crear E2E de inicio
+### T37. [x] Crear E2E de inicio
 
 - **Objetivo:** comprobar que la cancha carga y el boton permite iniciar.
 - **Verificación:** prueba headless en navegador real.

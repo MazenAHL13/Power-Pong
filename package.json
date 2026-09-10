@@ -14,10 +14,12 @@
     "build": "npm run build --workspace client && npm run build --workspace server",
     "lint": "npm run lint --workspaces --if-present",
     "start": "npm run start --workspace server",
-    "check": "npm run lint && npm run build"
+    "check": "npm run lint && npm run build",
+    "test:e2e": "playwright test"
   },
   "devDependencies": {
     "@eslint/js": "^9.35.0",
+    "@playwright/test": "^1.63.0",
     "eslint": "^9.35.0",
     "typescript-eslint": "^8.43.0"
   }
