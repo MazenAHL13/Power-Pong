@@ -61,22 +61,7 @@ function App() {
 
   return (
     <main className="app-shell">
-      <section className="game-screen" aria-labelledby="game-title">
-        <div className="game-header">
-          <div>
-            <p className="eyebrow">Proyecto final</p>
-            <h1 id="game-title">Power Pong Arena</h1>
-          </div>
-          <div className="score-panel">
-            <p className="score-line">
-              {game === null ? "0 - 0" : `${game.player.score} - ${game.computer.score}`}
-            </p>
-            <button type="button" onClick={handleStartGame} disabled={isStarting}>
-              {isStarting ? "Iniciando..." : "Iniciar partida"}
-            </button>
-          </div>
-        </div>
-
+      <section className="game-screen" aria-label="Power Pong Arena">
         <div
           className="court"
           aria-label="Cancha de Power Pong Arena"
@@ -127,16 +112,22 @@ function App() {
           )}
         </div>
 
-        <div className="game-info">
-          <p>Jugador: W / S</p>
-          <p>Computadora: backend</p>
-          <p>Estado: {game?.status ?? "cargando"}</p>
-        </div>
+        <p className="score-line">
+          {game === null ? "0 - 0" : `${game.player.score} - ${game.computer.score}`}
+        </p>
+
+        {game?.status !== "playing" && (
+          <button
+            className="start-button"
+            type="button"
+            onClick={handleStartGame}
+            disabled={isStarting}
+          >
+            {isStarting ? "Iniciando..." : "Iniciar partida"}
+          </button>
+        )}
 
         {error !== null && <p className="error-message">{error}</p>}
-        {game?.message !== null && game?.message !== undefined && (
-          <p className="message-line">{game.message}</p>
-        )}
       </section>
     </main>
   );
