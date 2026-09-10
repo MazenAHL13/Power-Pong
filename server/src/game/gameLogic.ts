@@ -104,6 +104,22 @@ export function moveComputerPaddle(game: GameState): GameState {
 
 export function moveBall(game: GameState): GameState {
   const ball = game.ball;
+  let nextY = ball.position.y + ball.velocity.y;
+  let nextVelocityY = ball.velocity.y;
+
+  // If the ball touches the top wall, place it on the wall
+  // and flip the vertical direction so it moves downward next.
+  if (nextY - ball.radius < 0) {
+    nextY = ball.radius;
+    nextVelocityY = Math.abs(ball.velocity.y);
+  }
+
+  // If the ball touches the bottom wall, place it on the wall
+  // and flip the vertical direction so it moves upward next.
+  if (nextY + ball.radius > COURT_HEIGHT) {
+    nextY = COURT_HEIGHT - ball.radius;
+    nextVelocityY = -Math.abs(ball.velocity.y);
+  }
 
   return {
     ...game,
@@ -111,7 +127,11 @@ export function moveBall(game: GameState): GameState {
       ...ball,
       position: {
         x: ball.position.x + ball.velocity.x,
-        y: ball.position.y + ball.velocity.y
+        y: nextY
+      },
+      velocity: {
+        ...ball.velocity,
+        y: nextVelocityY
       }
     },
     updatedAt: new Date().toISOString()

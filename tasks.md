@@ -140,7 +140,7 @@ Para cada tarea:
 - **Verificación:** dos ticks consecutivos producen posiciones distintas.
 - **Depende de:** T07 y T08.
 
-### T16. Implementar rebotes en paredes
+### T16. [x] Implementar rebotes en paredes
 
 - **Objetivo:** invertir la dirección vertical al tocar los límites superior/inferior.
 - **Conceptos:** colisión con límites.
