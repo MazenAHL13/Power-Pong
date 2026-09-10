@@ -156,7 +156,7 @@ Para cada tarea:
 - **Verificación:** probar contacto y casi-contacto.
 - **Depende de:** T12, T14 y T15.
 
-### T18. Implementar el endpoint `POST /api/game/tick`
+### T18. [x] Implementar el endpoint `POST /api/game/tick`
 
 - **Objetivo:** ejecutar una actualización completa del juego.
 - **Conceptos:** composición de reglas en un ciclo controlado.

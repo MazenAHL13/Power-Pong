@@ -184,3 +184,12 @@ export function moveBall(game: GameState): GameState {
     updatedAt: new Date().toISOString()
   };
 }
+
+export function tickGame(game: GameState): GameState {
+  // One tick is one small update of the game.
+  // First the computer reacts to the current ball position.
+  const gameAfterComputerMove = moveComputerPaddle(game);
+
+  // Then the ball moves and handles wall/paddle bounces.
+  return moveBall(gameAfterComputerMove);
+}

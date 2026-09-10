@@ -2,7 +2,7 @@ import express from "express";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
 import { createInitialGameState, createStartedGameState } from "./game/gameState.js";
-import { movePlayerPaddle } from "./game/gameLogic.js";
+import { movePlayerPaddle, tickGame } from "./game/gameLogic.js";
 import type { MoveAction } from "./game/types.js";
 
 const app = express();
@@ -88,6 +88,17 @@ app.post("/api/game/action", (request, response) => {
 
   // Send the updated game back so the frontend can redraw the screen.
   response.json(result);
+});
+
+app.post("/api/game/tick", (_request, response) => {
+  // A tick is the backend's "next frame" of the game.
+  // It moves the computer, moves the ball, and applies current bounce rules.
+  currentGame = tickGame(currentGame);
+
+  response.json({
+    ok: true,
+    game: currentGame
+  });
 });
 
 const currentFile = fileURLToPath(import.meta.url);
