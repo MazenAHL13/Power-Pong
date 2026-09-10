@@ -134,6 +134,7 @@ function App() {
       : game?.winner === "computer"
         ? "Gano la computadora"
         : null;
+  const startButtonText = game?.status === "finished" ? "Reiniciar partida" : "Iniciar partida";
 
   return (
     <main className="app-shell">
@@ -201,7 +202,7 @@ function App() {
             onClick={handleStartGame}
             disabled={isStarting}
           >
-            {isStarting ? "Iniciando..." : "Iniciar partida"}
+            {isStarting ? "Iniciando..." : startButtonText}
           </button>
         )}
 

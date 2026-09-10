@@ -296,7 +296,7 @@ Para cada tarea:
 - **Verificación:** no existen intervalos duplicados al re-renderizar.
 - **Depende de:** T18 y T31.
 
-### T35. Manejar errores y reinicio
+### T35. [x] Manejar errores y reinicio
 
 - **Objetivo:** mostrar errores de red/acción y permitir nueva partida.
 - **Conceptos:** estados de error y flujo de recuperación.
