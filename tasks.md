@@ -198,7 +198,7 @@ Para cada tarea:
 
 ## Fase 4: Cápsulas y poderes
 
-### T23. Generar cápsulas aleatorias
+### T23. [x] Generar cápsulas aleatorias
 
 - **Objetivo:** crear cápsulas con posición y tipo durante la partida.
 - **Conceptos:** aleatoriedad acotada y variabilidad.

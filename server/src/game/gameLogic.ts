@@ -1,11 +1,13 @@
 import {
   BALL_START_SPEED_X,
   BALL_START_SPEED_Y,
+  CAPSULE_RADIUS,
+  CAPSULE_SPAWN_CHANCE,
   COURT_HEIGHT,
   COURT_WIDTH,
   WINNING_SCORE
 } from "./constants.js";
-import type { GameState, MoveAction, PaddleState } from "./types.js";
+import type { GameState, MoveAction, PaddleState, PowerType } from "./types.js";
 
 // ===== TYPES USED ONLY IN THIS FILE =====
 
@@ -14,6 +16,8 @@ interface MoveResult {
   game: GameState;
   message?: string;
 }
+
+type RandomSource = () => number;
 
 // ===== SHARED SMALL HELPERS =====
 
@@ -300,6 +304,51 @@ function finishGameIfNeeded(game: GameState): GameState {
   return game;
 }
 
+// ===== CAPSULES =====
+
+function randomCourtPosition(random: RandomSource) {
+  // Keep the whole capsule inside the court, not half outside the wall.
+  return {
+    x: CAPSULE_RADIUS + random() * (COURT_WIDTH - CAPSULE_RADIUS * 2),
+    y: CAPSULE_RADIUS + random() * (COURT_HEIGHT - CAPSULE_RADIUS * 2)
+  };
+}
+
+export function spawnCapsuleIfNeeded(
+  game: GameState,
+  random: RandomSource = Math.random
+): GameState {
+  // Capsules only appear while the match is active.
+  if (game.status !== "playing") {
+    return game;
+  }
+
+  // If there is already a capsule, do not create a second one.
+  if (game.capsule !== null) {
+    return game;
+  }
+
+  // Most ticks should not spawn a capsule.
+  // The chance is small so capsules feel occasional.
+  if (random() > CAPSULE_SPAWN_CHANCE) {
+    return game;
+  }
+
+  const type: PowerType = random() < 0.5 ? "shield" : "turbo";
+
+  return {
+    ...game,
+    capsule: {
+      id: `capsule-${Date.now()}`,
+      type,
+      position: randomCourtPosition(random),
+      radius: CAPSULE_RADIUS
+    },
+    message: `Capsula ${type} aparecio.`,
+    updatedAt: new Date().toISOString()
+  };
+}
+
 // ===== TICK / ONE GAME UPDATE =====
 
 export function tickGame(game: GameState): GameState {
@@ -319,5 +368,8 @@ export function tickGame(game: GameState): GameState {
   const gameAfterScoring = scorePointIfNeeded(gameAfterBallMove);
 
   // If a score reached the winning number, finish the game and store the winner.
-  return finishGameIfNeeded(gameAfterScoring);
+  const gameAfterVictoryCheck = finishGameIfNeeded(gameAfterScoring);
+
+  // If there is no active capsule, maybe create one for players to collect.
+  return spawnCapsuleIfNeeded(gameAfterVictoryCheck);
 }
