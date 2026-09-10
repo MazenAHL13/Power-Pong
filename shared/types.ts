@@ -61,6 +61,7 @@ export interface GameState {
   computer: CompetitorState;
   ball: BallState;
   capsule: CapsuleState | null;
+  pointPauseTicks: number;
   winner: PlayerSide | null;
   message: string | null;
   updatedAt: string;

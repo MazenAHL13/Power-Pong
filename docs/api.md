@@ -70,6 +70,7 @@ Respuesta con error:
     "radius": 10
   },
   "capsule": null,
+  "pointPauseTicks": 20,
   "winner": null,
   "message": "Presiona iniciar partida para jugar.",
   "updatedAt": "1970-01-01T00:00:00.000Z"

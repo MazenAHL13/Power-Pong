@@ -7,6 +7,7 @@ import {
   COURT_HEIGHT,
   COURT_WIDTH,
   PADDLE_HEIGHT,
+  POINT_PAUSE_TICKS,
   PADDLE_SPEED,
   PADDLE_WIDTH,
   PLAYER_PADDLE_X
@@ -71,6 +72,7 @@ export function createInitialGameState(): GameState {
       radius: BALL_RADIUS
     },
     capsule: null,
+    pointPauseTicks: POINT_PAUSE_TICKS,
     winner: null,
     message: "Presiona iniciar partida para jugar.",
     updatedAt: new Date(0).toISOString()

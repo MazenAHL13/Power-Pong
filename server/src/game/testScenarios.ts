@@ -65,6 +65,7 @@ export function applyTestScenario(
         radius: CAPSULE_RADIUS
       },
       message: "Escenario de prueba: capsula del jugador.",
+      pointPauseTicks: 0,
       updatedAt: new Date().toISOString()
     };
   }
@@ -87,6 +88,7 @@ export function applyTestScenario(
         radius: CAPSULE_RADIUS
       },
       message: "Escenario de prueba: capsula de la computadora.",
+      pointPauseTicks: 0,
       updatedAt: new Date().toISOString()
     };
   }
@@ -113,6 +115,7 @@ export function applyTestScenario(
         }
       },
       message: "Escenario de prueba: punto del jugador.",
+      pointPauseTicks: 0,
       updatedAt: new Date().toISOString()
     };
   }
@@ -139,6 +142,7 @@ export function applyTestScenario(
       }
     },
     message: "Escenario de prueba: punto de la computadora.",
+    pointPauseTicks: 0,
     updatedAt: new Date().toISOString()
   };
 }

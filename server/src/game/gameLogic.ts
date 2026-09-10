@@ -8,6 +8,7 @@ import {
   COURT_HEIGHT,
   COURT_WIDTH,
   PADDLE_SHIELD_HEIGHT,
+  POINT_PAUSE_TICKS,
   SHIELD_DURATION_MS,
   TURBO_MULTIPLIER,
   WINNING_SCORE
@@ -360,7 +361,20 @@ function resetBallAfterPoint(game: GameState, directionX: number): GameState {
         x: directionX * BALL_START_SPEED_X,
         y: BALL_START_SPEED_Y
       }
-    }
+    },
+    pointPauseTicks: POINT_PAUSE_TICKS
+  };
+}
+
+function waitAfterPoint(game: GameState): GameState {
+  if (game.pointPauseTicks <= 0) {
+    return game;
+  }
+
+  return {
+    ...game,
+    pointPauseTicks: game.pointPauseTicks - 1,
+    updatedAt: new Date().toISOString()
   };
 }
 
@@ -598,6 +612,11 @@ export function tickGame(game: GameState): GameState {
 
   // First update shield timers so expired shields shrink before movement happens.
   const gameAfterTimers = updateShieldTimers(game);
+
+  // After a point, keep the ball still in the middle for a short moment.
+  if (gameAfterTimers.pointPauseTicks > 0) {
+    return waitAfterPoint(gameAfterTimers);
+  }
 
   // One tick is one small update of the game.
   // The computer reacts to the current ball position.

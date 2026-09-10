@@ -17,6 +17,7 @@ export const COMPUTER_PADDLE_X = COURT_WIDTH - PLAYER_PADDLE_X - PADDLE_WIDTH;
 export const BALL_RADIUS = 10;
 export const BALL_START_SPEED_X = 20;
 export const BALL_START_SPEED_Y = 4;
+export const POINT_PAUSE_TICKS = 40;
 export const TURBO_MULTIPLIER = 1.6;
 
 // Computer movement is intentionally slower than perfect tracking.
