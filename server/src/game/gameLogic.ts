@@ -1,11 +1,15 @@
 import { COURT_HEIGHT, COURT_WIDTH } from "./constants.js";
 import type { GameState, MoveAction, PaddleState } from "./types.js";
 
+// ===== TYPES USED ONLY IN THIS FILE =====
+
 interface MoveResult {
   ok: boolean;
   game: GameState;
   message?: string;
 }
+
+// ===== SHARED SMALL HELPERS =====
 
 function keepInsideCourt(y: number, paddleHeight: number): number {
   // This is used by the computer.
@@ -13,30 +17,7 @@ function keepInsideCourt(y: number, paddleHeight: number): number {
   return Math.min(Math.max(y, 0), COURT_HEIGHT - paddleHeight);
 }
 
-function ballTouchesPaddle(
-  ballX: number,
-  ballY: number,
-  ballRadius: number,
-  paddle: PaddleState
-): boolean {
-  // This checks whether the ball's small square area overlaps the paddle rectangle.
-  const ballLeft = ballX - ballRadius;
-  const ballRight = ballX + ballRadius;
-  const ballTop = ballY - ballRadius;
-  const ballBottom = ballY + ballRadius;
-
-  const paddleLeft = paddle.position.x;
-  const paddleRight = paddle.position.x + paddle.width;
-  const paddleTop = paddle.position.y;
-  const paddleBottom = paddle.position.y + paddle.height;
-
-  return (
-    ballRight >= paddleLeft &&
-    ballLeft <= paddleRight &&
-    ballBottom >= paddleTop &&
-    ballTop <= paddleBottom
-  );
-}
+// ===== PLAYER MOVEMENT =====
 
 export function movePlayerPaddle(game: GameState, action: MoveAction): MoveResult {
   // Get the human player's paddle from the current game.
@@ -94,6 +75,8 @@ export function movePlayerPaddle(game: GameState, action: MoveAction): MoveResul
   };
 }
 
+// ===== COMPUTER MOVEMENT =====
+
 export function moveComputerPaddle(game: GameState): GameState {
   // The computer looks at the middle of its paddle and the middle of the ball.
   const paddle = game.computer.paddle;
@@ -125,6 +108,33 @@ export function moveComputerPaddle(game: GameState): GameState {
     },
     updatedAt: new Date().toISOString()
   };
+}
+
+// ===== BALL MOVEMENT AND BOUNCES =====
+
+function ballTouchesPaddle(
+  ballX: number,
+  ballY: number,
+  ballRadius: number,
+  paddle: PaddleState
+): boolean {
+  // This checks whether the ball's small square area overlaps the paddle rectangle.
+  const ballLeft = ballX - ballRadius;
+  const ballRight = ballX + ballRadius;
+  const ballTop = ballY - ballRadius;
+  const ballBottom = ballY + ballRadius;
+
+  const paddleLeft = paddle.position.x;
+  const paddleRight = paddle.position.x + paddle.width;
+  const paddleTop = paddle.position.y;
+  const paddleBottom = paddle.position.y + paddle.height;
+
+  return (
+    ballRight >= paddleLeft &&
+    ballLeft <= paddleRight &&
+    ballBottom >= paddleTop &&
+    ballTop <= paddleBottom
+  );
 }
 
 export function moveBall(game: GameState): GameState {
@@ -185,6 +195,8 @@ export function moveBall(game: GameState): GameState {
   };
 }
 
+// ===== SCORING =====
+
 function scorePointIfNeeded(game: GameState): GameState {
   const ball = game.ball;
   const ballExitedLeft = ball.position.x + ball.radius < 0;
@@ -240,6 +252,8 @@ function scorePointIfNeeded(game: GameState): GameState {
     updatedAt: new Date().toISOString()
   };
 }
+
+// ===== TICK / ONE GAME UPDATE =====
 
 export function tickGame(game: GameState): GameState {
   // One tick is one small update of the game.
