@@ -34,6 +34,17 @@ app.post("/api/game/start", (_request, response) => {
   });
 });
 
+app.post("/api/game/reset", (_request, response) => {
+  // Refreshing the frontend calls this so the browser starts from a clean screen.
+  // The selected difficulty stays the same.
+  currentGame = createInitialGameState(currentGame.difficulty);
+
+  response.json({
+    ok: true,
+    game: currentGame
+  });
+});
+
 app.get("/api/game/state", (_request, response) => {
   // This does not change the game.
   // It only sends back whatever the server currently remembers.

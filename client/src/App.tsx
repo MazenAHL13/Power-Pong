@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getGameState, movePlayer, setGameDifficulty, startGame, tickGame } from "./api";
+import { movePlayer, resetGame, setGameDifficulty, startGame, tickGame } from "./api";
 import type { GameDifficulty, GameState } from "../../shared/types";
 import "./styles/app.css";
 
@@ -17,7 +17,7 @@ function App() {
 
     async function loadGameState() {
       try {
-        const response = await getGameState();
+        const response = await resetGame();
 
         if (!shouldIgnoreResponse) {
           setGame(response.game);

@@ -148,6 +148,36 @@ Respuesta:
 }
 ```
 
+## `POST /api/game/reset`
+
+Devuelve la partida a `ready` sin cambiar la dificultad seleccionada. El
+frontend llama esta ruta cuando se recarga la pagina para no continuar una
+partida vieja.
+
+Solicitud:
+
+```http
+POST /api/game/reset
+Content-Type: application/json
+```
+
+Cuerpo:
+
+```json
+{}
+```
+
+Respuesta:
+
+```json
+{
+  "ok": true,
+  "game": {
+    "status": "ready"
+  }
+}
+```
+
 ## `POST /api/game/action`
 
 Recibe una accion del jugador. Por ahora el contrato permite mover la paleta.

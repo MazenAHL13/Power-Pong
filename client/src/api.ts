@@ -28,6 +28,18 @@ export async function getGameState(): Promise<ApiGameResponse> {
   return readGameResponse(response);
 }
 
+export async function resetGame(): Promise<ApiGameResponse> {
+  const response = await fetch("/api/game/reset", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({})
+  });
+
+  return readGameResponse(response);
+}
+
 export async function movePlayer(direction: MoveDirection): Promise<ApiGameResponse> {
   const response = await fetch("/api/game/action", {
     method: "POST",
