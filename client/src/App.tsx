@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import { getGameState, movePlayer, startGame } from "./api";
+import { getGameState, movePlayer, startGame, tickGame } from "./api";
 import type { GameState } from "../../shared/types";
 import "./styles/app.css";
 
 const COURT_WIDTH = 900;
 const COURT_HEIGHT = 520;
+const TICK_DELAY_MS = 50;
 
 function App() {
   const [game, setGame] = useState<GameState | null>(null);
@@ -77,6 +78,34 @@ function App() {
 
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [game?.status]);
+
+  useEffect(() => {
+    if (game?.status !== "playing") {
+      return;
+    }
+
+    const tickIntervalId = window.setInterval(() => {
+      async function runTick() {
+        try {
+          const response = await tickGame();
+          setGame(response.game);
+        } catch (caughtError) {
+          const message =
+            caughtError instanceof Error
+              ? caughtError.message
+              : "No se pudo actualizar la partida.";
+
+          setError(message);
+        }
+      }
+
+      void runTick();
+    }, TICK_DELAY_MS);
+
+    return () => {
+      window.clearInterval(tickIntervalId);
     };
   }, [game?.status]);
 

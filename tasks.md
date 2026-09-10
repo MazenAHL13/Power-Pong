@@ -288,7 +288,7 @@ Para cada tarea:
 - **Verificación:** E2E observa un cambio de posición.
 - **Depende de:** T30.
 
-### T34. Coordinar el ciclo de ticks
+### T34. [x] Coordinar el ciclo de ticks
 
 - **Objetivo:** enviar ticks periódicos y actualizar el estado.
 - **Conceptos:** intervalos, limpieza de efectos y sincronización.
