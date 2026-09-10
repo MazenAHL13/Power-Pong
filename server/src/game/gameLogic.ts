@@ -7,7 +7,13 @@ import {
   COURT_WIDTH,
   WINNING_SCORE
 } from "./constants.js";
-import type { GameState, MoveAction, PaddleState, PowerType } from "./types.js";
+import type {
+  CompetitorState,
+  GameState,
+  MoveAction,
+  PaddleState,
+  PowerType
+} from "./types.js";
 
 // ===== TYPES USED ONLY IN THIS FILE =====
 
@@ -314,6 +320,70 @@ function randomCourtPosition(random: RandomSource) {
   };
 }
 
+function paddleTouchesCapsule(paddle: PaddleState, game: GameState): boolean {
+  if (game.capsule === null) {
+    return false;
+  }
+
+  return ballTouchesPaddle(
+    game.capsule.position.x,
+    game.capsule.position.y,
+    game.capsule.radius,
+    paddle
+  );
+}
+
+function givePowerToCompetitor(
+  competitor: CompetitorState,
+  powerType: PowerType
+): CompetitorState {
+  return {
+    ...competitor,
+    powers: competitor.powers.map((power) => {
+      if (power.type !== powerType) {
+        return power;
+      }
+
+      return {
+        ...power,
+        available: true,
+        active: false,
+        remainingMs: 0
+      };
+    })
+  };
+}
+
+export function collectCapsuleIfNeeded(game: GameState): GameState {
+  if (game.capsule === null) {
+    return game;
+  }
+
+  const capsuleType = game.capsule.type;
+
+  if (paddleTouchesCapsule(game.player.paddle, game)) {
+    return {
+      ...game,
+      player: givePowerToCompetitor(game.player, capsuleType),
+      capsule: null,
+      message: `Jugador recogio ${capsuleType}.`,
+      updatedAt: new Date().toISOString()
+    };
+  }
+
+  if (paddleTouchesCapsule(game.computer.paddle, game)) {
+    return {
+      ...game,
+      computer: givePowerToCompetitor(game.computer, capsuleType),
+      capsule: null,
+      message: `Computadora recogio ${capsuleType}.`,
+      updatedAt: new Date().toISOString()
+    };
+  }
+
+  return game;
+}
+
 export function spawnCapsuleIfNeeded(
   game: GameState,
   random: RandomSource = Math.random
@@ -370,6 +440,9 @@ export function tickGame(game: GameState): GameState {
   // If a score reached the winning number, finish the game and store the winner.
   const gameAfterVictoryCheck = finishGameIfNeeded(gameAfterScoring);
 
+  // If a paddle touches an active capsule, that side receives the power.
+  const gameAfterCapsulePickup = collectCapsuleIfNeeded(gameAfterVictoryCheck);
+
   // If there is no active capsule, maybe create one for players to collect.
-  return spawnCapsuleIfNeeded(gameAfterVictoryCheck);
+  return spawnCapsuleIfNeeded(gameAfterCapsulePickup);
 }

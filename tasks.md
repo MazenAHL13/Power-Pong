@@ -206,7 +206,7 @@ Para cada tarea:
 - **Verificación:** las posiciones siempre están dentro de los límites.
 - **Depende de:** T18.
 
-### T24. Detectar recogida de cápsulas
+### T24. [x] Detectar recogida de cápsulas
 
 - **Objetivo:** entregar la cápsula cuando una paleta la toca.
 - **Conceptos:** reutilización de colisiones y transición de estado.
