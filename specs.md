@@ -11,10 +11,11 @@ El proyecto debe demostrar:
 - Comunicación real mediante `fetch`.
 - Manejo de estado, interacción, movimiento, validaciones y finalización.
 - Pruebas E2E, documentación, integración continua y despliegue.
+- Una defensa individual donde el estudiante pueda explicar, probar y modificar el codigo.
 
 ## 2. Alcance
 
-La primera versión será una partida local de un jugador humano contra la computadora. El jugador controlará la paleta izquierda y la computadora controlará la paleta derecha mediante un seguimiento simple de la pelota.
+La primera versión será una partida local de un jugador humano contra la computadora. Esta decision cumple el requisito de al menos dos competidores porque el examen permite jugar contra una estrategia controlada por el backend. El jugador controlará la paleta izquierda y la computadora controlará la paleta derecha mediante un seguimiento simple de la pelota ejecutado en Express.
 
 El estado de la partida se conservará en memoria del servidor. No se utilizarán cuentas, base de datos, autenticación ni multijugador por red.
 
@@ -32,6 +33,7 @@ El estado de la partida se conservará en memoria del servidor. No se utilizará
 10. La partida termina cuando un competidor alcanza 7 puntos.
 11. Mientras la partida está terminada no se aceptan acciones de juego.
 12. El usuario puede iniciar una nueva partida.
+13. La interfaz muestra instrucciones visibles, controles, marcador, poderes, errores y resultado sin depender de la consola.
 
 ## 4. Reglas del juego
 
@@ -46,8 +48,10 @@ El estado de la partida se conservará en memoria del servidor. No se utilizará
 - Si la pelota sale por la derecha, el jugador gana un punto.
 - Después de cada punto, la pelota vuelve al centro.
 - Gana el primero que llegue a 7 puntos.
+- Empate: no aplica como resultado normal. La partida termina en el mismo tick en que un competidor llega a 7 puntos y cada punto pertenece solo a un competidor. Esta regla debe documentarse para cubrir el requisito de definir empate.
 - Después de la victoria, el estado pasa a `finished` y se bloquean acciones de movimiento y poderes.
 - Intentar realizar una acción inválida debe producir un mensaje visible.
+- El jugador toma decisiones estrategicas al priorizar defensa, captura de cápsulas, conservacion del turbo y uso de posicion para forzar puntos.
 
 Las dimensiones, velocidades, intervalo del tick y probabilidades de aparición se definirán como constantes fáciles de modificar, no como valores dispersos por el código.
 
@@ -82,6 +86,7 @@ El estado mínimo debe incluir:
 - Tiempo restante del escudo.
 - Cápsula actual, si existe.
 - Ganador, si la partida terminó.
+- Definicion de empate como no aplicable por reglas.
 - Mensaje reciente para feedback visible.
 
 ## 7. Contrato de datos
@@ -192,6 +197,7 @@ Respuesta:
 ### React
 
 - Mostrar inicio, cancha, marcador, poderes, mensajes y resultado.
+- Mostrar instrucciones visibles, controles y recursos visuales del juego.
 - Capturar las teclas del usuario.
 - Enviar acciones con `fetch`.
 - Solicitar ticks periódicos al backend.
@@ -203,6 +209,7 @@ Respuesta:
 - Crear y conservar la partida en memoria.
 - Validar todas las acciones.
 - Ejecutar la simulación y las reglas.
+- Controlar la estrategia de la computadora.
 - Controlar puntuación, ganador, cápsulas y poderes.
 - Devolver respuestas JSON consistentes.
 - Servir el frontend compilado en producción.
@@ -263,8 +270,23 @@ Se usará un modo determinista exclusivo para pruebas, capaz de fijar cápsulas 
 - Render será la plataforma inicial de publicación.
 - GitHub Actions tendrá workflows separados para lint, E2E y deployment.
 - La URL pública debe permitir acceder al juego completo.
+- La prueba E2E debe ejecutarse headless en GitHub Actions y visualmente en Chrome durante la defensa.
+- La misma prueba o una equivalente debe poder ejecutarse contra la URL publicada.
+- La configuracion debe documentar puerto, variables de entorno, comandos de inicio y estrategia de deployment.
+- Docker queda fuera de la version base; si se agrega, se debe documentar Dockerfile, build, ejecucion local, puerto y variables.
 
-## 14. Criterios de aceptación
+## 14. Entrega y defensa
+
+- El repositorio GitHub debe estar accesible para evaluacion, con historial de commits comprensible.
+- El repositorio debe estar actualizado como maximo hasta el 15 de septiembre de 2026 a horas 16:00, segun GitHub.
+- La aplicacion publicada debe corresponder al mismo trabajo del repositorio.
+- El README debe incluir requisitos, comandos, arquitectura, endpoints JSON, variables de entorno y enlace al despliegue.
+- `docs/` debe incluir decisiones, cambios importantes, investigacion de E2E, investigacion de publicacion y registro de uso de IA.
+- El registro de IA debe indicar solicitudes relevantes, respuestas incorporadas y verificaciones hechas por el estudiante.
+- Debe prepararse un video de 3 a 5 minutos con partida, solicitud JSON, prueba E2E visual en Chrome, GitHub Actions y aplicacion publicada.
+- La defensa dura maximo 10 minutos e incluye una prueba E2E en produccion y un cambio solicitado que debe pasar lint, E2E headless y deployment.
+
+## 15. Criterios de aceptación
 
 - Se puede iniciar y reiniciar una partida.
 - El jugador puede mover su paleta sin salir de la cancha.
@@ -276,12 +298,13 @@ Se usará un modo determinista exclusivo para pruebas, capaz de fijar cápsulas 
 - El escudo expira después de 30 segundos.
 - El turbo se consume después del siguiente impacto.
 - La partida termina al llegar a 7 puntos.
+- El empate esta definido como no aplicable en la documentacion.
 - No se aceptan acciones después de terminar.
 - Las acciones inválidas muestran feedback visible.
 - React y Express se comunican con JSON mediante `fetch`.
-- Existen pruebas E2E, documentación, workflows y una URL publicada.
+- Existen instrucciones visibles, recursos visuales del juego, pruebas E2E, documentación, workflows y una URL publicada.
 
-## 15. Fuera de alcance
+## 16. Fuera de alcance
 
 - Multijugador por internet.
 - Login, perfiles o ranking.
@@ -290,3 +313,4 @@ Se usará un modo determinista exclusivo para pruebas, capaz de fijar cápsulas 
 - React Router, Redux, Axios, Bootstrap, Tailwind o bibliotecas de componentes.
 - Motores de videojuegos.
 - Física avanzada o matchmaking.
+- Juegos prohibidos por el examen: tres en raya, buscaminas, adivinanzas basadas en tablas, Space Invaders, juegos hechos en clase, colecciones de minijuegos o aplicaciones que solo registran puntajes.

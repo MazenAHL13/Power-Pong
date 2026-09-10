@@ -16,10 +16,10 @@ Para cada tarea:
 
 ### T01. Convertir el TRD en checklist
 
-- **Objetivo:** transformar los requisitos de `TRD.md` en una lista verificable.
+- **Objetivo:** transformar los requisitos de `TRD.md` y del PDF del examen en una lista verificable.
 - **Conceptos:** requisitos funcionales y no funcionales.
-- **Resultado:** checklist de juego, API, pruebas, documentación y despliegue.
-- **Revisión:** cada requisito del TRD aparece en una categoría.
+- **Resultado:** `docs/requirements-checklist.md` con checklist de juego, API, pruebas, documentación, entrega, defensa y despliegue.
+- **Revisión:** cada requisito del TRD y del PDF aparece en una categoría.
 - **Depende de:** ninguna.
 
 ### T02. Elegir la estructura del proyecto
@@ -58,9 +58,9 @@ Para cada tarea:
 
 ### T06. Definir los tipos de la partida
 
-- **Objetivo:** crear los tipos TypeScript de `GameState`, pelota, paletas, poderes y cápsulas.
+- **Objetivo:** crear los tipos TypeScript de `GameState`, pelota, paletas, poderes, cápsulas y competidores.
 - **Conceptos:** interfaces, uniones literales y composición de tipos.
-- **Resultado:** un contrato legible que representa todo el estado.
+- **Resultado:** un contrato legible que representa al jugador humano y a la computadora controlada por backend.
 - **Verificación:** TypeScript detecta estados inválidos.
 - **Depende de:** T05.
 
@@ -182,10 +182,10 @@ Para cada tarea:
 
 ### T21. Implementar victoria y finalización
 
-- **Objetivo:** terminar la partida al alcanzar 7 puntos.
+- **Objetivo:** terminar la partida al alcanzar 7 puntos y dejar definida la regla de empate.
 - **Conceptos:** máquina de estados y condición terminal.
-- **Resultado:** se guarda el ganador y el estado pasa a `finished`.
-- **Verificación:** un estado terminado no vuelve a `playing` con un tick.
+- **Resultado:** se guarda el ganador, el estado pasa a `finished` y el empate queda documentado como no aplicable por reglas.
+- **Verificación:** un estado terminado no vuelve a `playing` con un tick y no existe un resultado ambiguo.
 - **Depende de:** T19.
 
 ### T22. Bloquear acciones después de terminar
@@ -258,9 +258,9 @@ Para cada tarea:
 
 ### T30. Renderizar la cancha
 
-- **Objetivo:** mostrar pelota, paletas y límites.
+- **Objetivo:** mostrar pelota, paletas, límites, instrucciones visibles y recursos visuales del juego.
 - **Conceptos:** renderizado basado en estado y CSS propio.
-- **Resultado:** la cancha ocupa el área visible del navegador.
+- **Resultado:** la cancha ocupa el área visible del navegador e integra escenario, controles, marcador y estado.
 - **Verificación:** los elementos aparecen en posiciones correctas.
 - **Depende de:** T29.
 
@@ -307,8 +307,8 @@ Para cada tarea:
 ### T36. Revisar responsive y accesibilidad
 
 - **Objetivo:** asegurar uso cómodo en escritorio y móvil.
-- **Conceptos:** CSS responsive, foco, etiquetas y contraste.
-- **Resultado:** controles y estados son legibles y navegables.
+- **Conceptos:** CSS responsive, foco, etiquetas, contraste y uso significativo de pantalla.
+- **Resultado:** controles, instrucciones y estados son legibles y navegables.
 - **Verificación:** revisar tamaños de pantalla y navegación por teclado.
 - **Depende de:** T30-T35.
 
@@ -341,18 +341,18 @@ Para cada tarea:
 ### T41. Documentar reglas y decisiones
 
 - **Objetivo:** crear `docs/introduccion.md`, `docs/reglas.md`, `docs/decisiones.md` y `docs/riesgos.md`.
-- **Verificación:** otra persona puede explicar el juego leyendo la documentación.
+- **Verificación:** otra persona puede explicar nombre, proposito, reglas, jugadores, empate no aplicable, movimientos, estados, interaccion, decisiones, riesgos y cambios importantes leyendo la documentación.
 - **Depende de:** T21-T26.
 
 ### T42. Documentar API, E2E, publicación y uso de IA
 
-- **Objetivo:** registrar contrato, investigación, despliegue y uso de herramientas de IA.
-- **Verificación:** la documentación coincide con la implementación final.
+- **Objetivo:** registrar contrato, investigación, despliegue, variables de entorno, puerto, fuentes consultadas, limitaciones y uso de herramientas de IA.
+- **Verificación:** la documentación coincide con la implementación final e indica solicitudes relevantes de IA, respuestas incorporadas y verificaciones del estudiante.
 - **Depende de:** T09, T27 y T40.
 
 ### T43. Completar el README
 
-- **Objetivo:** documentar instalación, comandos, pruebas y ejecución local.
+- **Objetivo:** documentar requisitos, instalación, comandos, arquitectura, endpoints JSON, variables de entorno, ejecución local, pruebas, despliegue y URL pública.
 - **Verificación:** clonar el repositorio y seguir el README desde cero.
 - **Depende de:** T05, T40 y T42.
 
@@ -367,7 +367,7 @@ Para cada tarea:
 ### T45. Configurar workflow E2E
 
 - **Objetivo:** instalar navegadores, levantar la aplicación y ejecutar E2E headless.
-- **Verificación:** el workflow completa sin interacción manual.
+- **Verificación:** el workflow completa sin interacción manual y existe comando equivalente para ejecutar visualmente en Chrome durante la defensa.
 - **Depende de:** T37-T40.
 
 ### T46. Preparar despliegue en Render
@@ -379,23 +379,31 @@ Para cada tarea:
 ### T47. Crear workflow de deployment
 
 - **Objetivo:** publicar la aplicación mediante el mecanismo elegido.
-- **Verificación:** el workflow produce un deployment identificable.
+- **Verificación:** el workflow produce un deployment identificable y puede reflejar un cambio solicitado durante la defensa.
 - **Depende de:** T46.
 
 ### T48. Verificar la URL pública
 
-- **Objetivo:** comprobar frontend, API y flujo principal en producción.
-- **Verificación:** una sola URL sirve la aplicación y las acciones funcionan.
+- **Objetivo:** comprobar frontend, API, flujo principal y prueba E2E visual en producción.
+- **Verificación:** una sola URL sirve la aplicación, las acciones funcionan y Playwright o herramienta equivalente puede usar Chrome visual contra esa URL.
 - **Depende de:** T47.
 
 ### T49. Ejecutar checklist final
 
 - **Objetivo:** revisar todos los requisitos del TRD antes de la defensa.
-- **Verificación:** cada requisito tiene evidencia: código, prueba, documento o URL.
+- **Verificación:** cada requisito tiene evidencia: código, prueba, documento, workflow, video o URL; el repositorio está actualizado antes del 15 de septiembre de 2026 a horas 16:00.
 - **Depende de:** T41-T48.
 
 ### T50. Preparar la defensa
 
-- **Objetivo:** crear una explicación breve de arquitectura, estado, API, física y decisiones.
-- **Verificación:** poder explicar y modificar las partes principales sin depender de notas ocultas.
+- **Objetivo:** crear una explicación breve de arquitectura, estado, API, física, decisiones, uso de IA y estrategia de despliegue.
+- **Verificación:** poder explicar y modificar las partes principales en menos de 10 minutos, ejecutar E2E en producción, activar GitHub Actions y demostrar el cambio publicado.
 - **Depende de:** T49.
+
+### T51. Preparar video de entrega
+
+- **Objetivo:** grabar un video de 3 a 5 minutos con la evidencia solicitada por el examen.
+- **Conceptos:** comunicacion tecnica y evidencia de entrega.
+- **Resultado:** video que muestra una partida, una solicitud JSON, una prueba E2E visual en Chrome, resultados de GitHub Actions y la aplicacion publicada.
+- **Verificación:** el video dura entre 3 y 5 minutos y corresponde al mismo repositorio y URL publicados.
+- **Depende de:** T48.
