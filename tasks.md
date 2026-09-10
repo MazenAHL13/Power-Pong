@@ -106,7 +106,7 @@ Para cada tarea:
 - **Verificación:** consultar dos veces produce el mismo estado si no hay tick.
 - **Depende de:** T10.
 
-### T12. Implementar acciones de movimiento
+### T12. [x] Implementar acciones de movimiento
 
 - **Objetivo:** aceptar movimiento arriba/abajo del jugador.
 - **Conceptos:** validación del body y actualización de posición.
