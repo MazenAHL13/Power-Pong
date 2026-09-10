@@ -71,3 +71,13 @@ export function createInitialGameState(): GameState {
     updatedAt: new Date(0).toISOString()
   };
 }
+
+// Creates the state used when the player starts or restarts a match.
+export function createStartedGameState(): GameState {
+  return {
+    ...createInitialGameState(),
+    status: "playing",
+    message: "Partida iniciada.",
+    updatedAt: new Date().toISOString()
+  };
+}

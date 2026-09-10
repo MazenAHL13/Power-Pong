@@ -90,7 +90,7 @@ Para cada tarea:
 
 ## Fase 2: Backend básico
 
-### T10. Implementar `POST /api/game/start`
+### T10. [x] Implementar `POST /api/game/start`
 
 - **Objetivo:** crear o reiniciar una partida en memoria.
 - **Conceptos:** POST, mutación de estado y respuestas JSON.
@@ -98,7 +98,7 @@ Para cada tarea:
 - **Verificación:** dos llamadas consecutivas reinician el puntaje.
 - **Depende de:** T08.
 
-### T11. Implementar `GET /api/game/state`
+### T11. [x] Implementar `GET /api/game/state`
 
 - **Objetivo:** consultar el estado actual.
 - **Conceptos:** GET y lectura del estado del servidor.
