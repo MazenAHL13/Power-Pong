@@ -221,3 +221,29 @@ Respuesta:
 - `direction`: `up`, `down`.
 - `power`: `shield`, `turbo`.
 - `winner`: `player`, `computer` o `null`.
+
+## Endpoint solo para pruebas
+
+`POST /api/test/scenario` solo responde cuando el servidor se ejecuta con
+`TEST_MODE=true`. En modo normal devuelve `404`.
+
+Sirve para preparar escenarios E2E sin depender de esperar eventos aleatorios.
+
+Ejemplos de cuerpo:
+
+```json
+{ "scenario": "playerCapsule", "power": "shield" }
+```
+
+```json
+{ "scenario": "playerNearWin" }
+```
+
+Escenarios permitidos:
+
+- `playerCapsule`
+- `computerCapsule`
+- `playerPoint`
+- `computerPoint`
+- `playerNearWin`
+- `computerNearWin`

@@ -3,10 +3,12 @@ import { fileURLToPath } from "node:url";
 import path from "node:path";
 import { createInitialGameState, createStartedGameState } from "./game/gameState.js";
 import { movePlayerPaddle, tickGame } from "./game/gameLogic.js";
+import { applyTestScenario, isTestScenarioRequest } from "./game/testScenarios.js";
 import type { MoveAction } from "./game/types.js";
 
 const app = express();
 const port = Number(process.env.PORT ?? 3000);
+const testModeEnabled = process.env.TEST_MODE === "true";
 
 // This variable is the server's memory.
 // It remembers the latest version of the game between API calls.
@@ -94,6 +96,31 @@ app.post("/api/game/tick", (_request, response) => {
   // A tick is the backend's "next frame" of the game.
   // It moves the computer, moves the ball, and applies current bounce rules.
   currentGame = tickGame(currentGame);
+
+  response.json({
+    ok: true,
+    game: currentGame
+  });
+});
+
+app.post("/api/test/scenario", (request, response) => {
+  // This route exists only for automated tests.
+  // In normal mode it behaves like it does not exist.
+  if (!testModeEnabled) {
+    response.sendStatus(404);
+    return;
+  }
+
+  if (!isTestScenarioRequest(request.body)) {
+    response.status(400).json({
+      ok: false,
+      message: "Escenario de prueba invalido",
+      game: currentGame
+    });
+    return;
+  }
+
+  currentGame = applyTestScenario(currentGame, request.body);
 
   response.json({
     ok: true,

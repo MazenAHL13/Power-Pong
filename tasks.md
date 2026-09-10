@@ -230,7 +230,7 @@ Para cada tarea:
 - **Verificación:** comprobar que no se consume antes ni permanece después.
 - **Depende de:** T24 y T17.
 
-### T27. Añadir el modo determinista de pruebas
+### T27. [x] Añadir el modo determinista de pruebas
 
 - **Objetivo:** permitir escenarios controlados solo en entorno de pruebas.
 - **Conceptos:** test hooks, configuración y aislamiento.
