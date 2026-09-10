@@ -80,7 +80,7 @@ Para cada tarea:
 - **Verificación:** iniciar dos partidas produce el mismo esquema inicial.
 - **Depende de:** T06 y T07.
 
-### T09. Documentar el contrato de la API
+### T09. [x] Documentar el contrato de la API
 
 - **Objetivo:** especificar cuerpos, respuestas y errores de cada endpoint.
 - **Conceptos:** API REST y contrato entre frontend/backend.
