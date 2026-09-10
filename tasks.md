@@ -248,7 +248,7 @@ Para cada tarea:
 - **Verificación:** iniciar y consultar usan las rutas correctas.
 - **Depende de:** T09-T11.
 
-### T29. Crear la pantalla de inicio
+### T29. [x] Crear la pantalla de inicio
 
 - **Objetivo:** permitir iniciar una partida desde la interfaz.
 - **Conceptos:** eventos, estado de carga y feedback.

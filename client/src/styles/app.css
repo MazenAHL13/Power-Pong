@@ -3,24 +3,22 @@
   display: grid;
   place-items: center;
   padding: 32px;
-  background:
-    linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px),
-    linear-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px),
-    #101418;
-  background-size: 56px 56px;
+  background: #f6f6f6;
+  color: #1f1f1f;
 }
 
-.start-panel {
+.start-panel,
+.game-summary {
   width: min(640px, 100%);
-  border: 1px solid rgba(255, 255, 255, 0.18);
+  border: 1px solid #d7d7d7;
   border-radius: 8px;
   padding: 32px;
-  background: rgba(16, 20, 24, 0.88);
+  background: #ffffff;
 }
 
 .eyebrow {
   margin: 0 0 12px;
-  color: #8bd3ff;
+  color: #555555;
   font-size: 0.78rem;
   font-weight: 700;
   letter-spacing: 0;
@@ -29,29 +27,53 @@
 
 h1 {
   margin: 0;
-  font-size: clamp(2.4rem, 7vw, 4.8rem);
-  line-height: 1;
+  font-size: 2.5rem;
+  line-height: 1.1;
 }
 
 .start-panel p:not(.eyebrow) {
   max-width: 52ch;
   margin: 20px 0 28px;
-  color: #c8d3df;
+  color: #444444;
   line-height: 1.6;
 }
 
 button {
   min-height: 44px;
-  border: 0;
+  border: 1px solid #1f1f1f;
   border-radius: 6px;
   padding: 0 18px;
-  background: #f8dd5f;
-  color: #151515;
+  background: #1f1f1f;
+  color: #ffffff;
   font-weight: 700;
   cursor: pointer;
 }
 
+button:disabled {
+  cursor: wait;
+  opacity: 0.7;
+}
+
 button:focus-visible {
-  outline: 3px solid #8bd3ff;
+  outline: 3px solid #777777;
   outline-offset: 3px;
+}
+
+.error-message {
+  margin: 0 0 18px;
+  color: #9b1c1c;
+  font-weight: 700;
+}
+
+.score-line {
+  margin: 24px 0 8px;
+  color: #1f1f1f;
+  font-size: 1.4rem;
+  font-weight: 800;
+}
+
+.state-line,
+.message-line {
+  margin: 8px 0 0;
+  color: #444444;
 }
