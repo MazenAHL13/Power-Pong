@@ -316,7 +316,7 @@ Para cada tarea:
 
 Esta fase se agrega para fortalecer la parte del servidor sin complicar la interfaz. La idea es que el backend no solo mueva la computadora, sino que tenga reglas configurables de dificultad.
 
-### T36A. Definir dificultades del juego
+### T36A. [x] Definir dificultades del juego
 
 - **Objetivo:** crear un tipo simple `GameDifficulty` con valores `easy`, `normal` y `hard`.
 - **Conceptos:** contrato compartido y reglas configurables.
@@ -324,7 +324,7 @@ Esta fase se agrega para fortalecer la parte del servidor sin complicar la inter
 - **Verificación:** TypeScript no permite usar una dificultad fuera de esos tres valores.
 - **Depende de:** T06.
 
-### T36B. Crear configuración de dificultad en el servidor
+### T36B. [x] Crear configuración de dificultad en el servidor
 
 - **Objetivo:** centralizar velocidad y probabilidad de reacción de la computadora por dificultad.
 - **Conceptos:** configuración por modo y separación de reglas.
@@ -332,7 +332,7 @@ Esta fase se agrega para fortalecer la parte del servidor sin complicar la inter
 - **Verificación:** cambiar de dificultad cambia los valores usados por la IA.
 - **Depende de:** T36A y T14.
 
-### T36C. Guardar la dificultad en `GameState`
+### T36C. [x] Guardar la dificultad en `GameState`
 
 - **Objetivo:** agregar la dificultad actual dentro del estado de la partida.
 - **Conceptos:** estado del juego y fuente de verdad del backend.
@@ -340,7 +340,7 @@ Esta fase se agrega para fortalecer la parte del servidor sin complicar la inter
 - **Verificación:** iniciar una partida conserva o define una dificultad valida.
 - **Depende de:** T36A y T08.
 
-### T36D. Agregar endpoint para cambiar dificultad
+### T36D. [x] Agregar endpoint para cambiar dificultad
 
 - **Objetivo:** implementar una ruta simple para cambiar la dificultad desde el cliente o con `curl`.
 - **Conceptos:** validación de entrada, mutación de estado y respuesta JSON.
@@ -348,7 +348,7 @@ Esta fase se agrega para fortalecer la parte del servidor sin complicar la inter
 - **Verificación:** una dificultad válida actualiza el estado; una inválida devuelve error y no rompe la partida.
 - **Depende de:** T36B y T36C.
 
-### T36E. Usar la dificultad en la IA de la computadora
+### T36E. [x] Usar la dificultad en la IA de la computadora
 
 - **Objetivo:** hacer que la paleta de la computadora use la configuración de dificultad actual.
 - **Conceptos:** IA simple parametrizada por estado.
@@ -356,7 +356,7 @@ Esta fase se agrega para fortalecer la parte del servidor sin complicar la inter
 - **Verificación:** con la misma posición de pelota, cada dificultad produce comportamiento distinto.
 - **Depende de:** T36B, T36C y T36D.
 
-### T36F. Agregar control mínimo de dificultad en el frontend
+### T36F. [x] Agregar control mínimo de dificultad en el frontend
 
 - **Objetivo:** permitir elegir dificultad sin crear navegación ni pantallas extra.
 - **Conceptos:** control simple, llamada API y estado compartido.
@@ -364,7 +364,7 @@ Esta fase se agrega para fortalecer la parte del servidor sin complicar la inter
 - **Verificación:** cambiar dificultad actualiza el estado y el siguiente tick usa esa dificultad.
 - **Depende de:** T36D y T36E.
 
-### T36G. Documentar dificultad
+### T36G. [x] Documentar dificultad
 
 - **Objetivo:** explicar en `docs/study-guide.md` cómo funcionan los modos de dificultad.
 - **Conceptos:** documentación de reglas y defensa técnica.

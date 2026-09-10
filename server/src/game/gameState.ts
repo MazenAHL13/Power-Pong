@@ -1,12 +1,10 @@
 import {
   BALL_RADIUS,
-  BALL_START_SPEED_X,
-  BALL_START_SPEED_Y,
-  COMPUTER_PADDLE_SPEED,
   COMPUTER_PADDLE_X,
   COURT_HEIGHT,
   COURT_WIDTH,
-  PADDLE_HEIGHT,
+  DEFAULT_DIFFICULTY,
+  DIFFICULTY_SETTINGS,
   POINT_PAUSE_TICKS,
   PADDLE_SPEED,
   PADDLE_WIDTH,
@@ -14,24 +12,30 @@ import {
 } from "./constants.js";
 import type {
   CompetitorState,
+  GameDifficulty,
   GameState,
   PaddleState,
   PlayerSide,
   PowerState
 } from "../../../shared/types.js";
 
-function createPaddle(side: PlayerSide): PaddleState {
+function createPaddle(side: PlayerSide, difficulty: GameDifficulty): PaddleState {
+  const difficultySettings = DIFFICULTY_SETTINGS[difficulty];
   const x = side === "player" ? PLAYER_PADDLE_X : COMPUTER_PADDLE_X;
-  const speed = side === "player" ? PADDLE_SPEED : COMPUTER_PADDLE_SPEED;
+  const baseHeight =
+    side === "player"
+      ? difficultySettings.playerPaddleHeight
+      : difficultySettings.computerPaddleHeight;
+  const speed = side === "player" ? PADDLE_SPEED : difficultySettings.computerPaddleSpeed;
 
   return {
     position: {
       x,
-      y: COURT_HEIGHT / 2 - PADDLE_HEIGHT / 2
+      y: COURT_HEIGHT / 2 - baseHeight / 2
     },
     width: PADDLE_WIDTH,
-    baseHeight: PADDLE_HEIGHT,
-    height: PADDLE_HEIGHT,
+    baseHeight,
+    height: baseHeight,
     speed
   };
 }
@@ -44,30 +48,39 @@ function createPower(type: PowerState["type"]): PowerState {
   };
 }
 
-function createCompetitor(side: PlayerSide, label: string): CompetitorState {
+function createCompetitor(
+  side: PlayerSide,
+  label: string,
+  difficulty: GameDifficulty
+): CompetitorState {
   return {
     side,
     label,
     score: 0,
-    paddle: createPaddle(side),
+    paddle: createPaddle(side, difficulty),
     powers: [createPower("shield"), createPower("turbo")]
   };
 }
 
 // Creates a clean ready-state game before the player presses start.
-export function createInitialGameState(): GameState {
+export function createInitialGameState(
+  difficulty: GameDifficulty = DEFAULT_DIFFICULTY
+): GameState {
+  const difficultySettings = DIFFICULTY_SETTINGS[difficulty];
+
   return {
     status: "ready",
-    player: createCompetitor("player", "Jugador"),
-    computer: createCompetitor("computer", "Computadora"),
+    difficulty,
+    player: createCompetitor("player", "Jugador", difficulty),
+    computer: createCompetitor("computer", "Computadora", difficulty),
     ball: {
       position: {
         x: COURT_WIDTH / 2,
         y: COURT_HEIGHT / 2
       },
       velocity: {
-        x: BALL_START_SPEED_X,
-        y: BALL_START_SPEED_Y
+        x: difficultySettings.ballSpeedX,
+        y: difficultySettings.ballSpeedY
       },
       radius: BALL_RADIUS
     },
@@ -80,9 +93,11 @@ export function createInitialGameState(): GameState {
 }
 
 // Creates the state used when the player starts or restarts a match.
-export function createStartedGameState(): GameState {
+export function createStartedGameState(
+  difficulty: GameDifficulty = DEFAULT_DIFFICULTY
+): GameState {
   return {
-    ...createInitialGameState(),
+    ...createInitialGameState(difficulty),
     status: "playing",
     message: "Partida iniciada.",
     updatedAt: new Date().toISOString()

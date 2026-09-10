@@ -3,7 +3,7 @@ import path from "node:path";
 import { createInitialGameState, createStartedGameState } from "./game/gameState.js";
 import { movePlayerPaddle, tickGame } from "./game/gameLogic.js";
 import { applyTestScenario, isTestScenarioRequest } from "./game/testScenarios.js";
-import type { MoveAction } from "../../shared/types.js";
+import type { GameDifficulty, MoveAction } from "../../shared/types.js";
 
 const app = express();
 const port = Number(process.env.PORT ?? 3000);
@@ -26,7 +26,7 @@ app.get("/api/health", (_request, response) => {
 
 app.post("/api/game/start", (_request, response) => {
   // When the player starts, we replace the old game with a fresh playing game.
-  currentGame = createStartedGameState();
+  currentGame = createStartedGameState(currentGame.difficulty);
 
   response.json({
     ok: true,
@@ -65,6 +65,20 @@ function isMoveAction(value: unknown): value is MoveAction {
   );
 }
 
+function isGameDifficulty(value: unknown): value is GameDifficulty {
+  return value === "easy" || value === "normal" || value === "hard";
+}
+
+function isDifficultyRequest(value: unknown): value is { difficulty: GameDifficulty } {
+  if (typeof value !== "object" || value === null) {
+    return false;
+  }
+
+  const body = value as Record<string, unknown>;
+
+  return isGameDifficulty(body.difficulty);
+}
+
 app.post("/api/game/action", (request, response) => {
   // If the body is not a valid move action, we reject it and keep the game unchanged.
   if (!isMoveAction(request.body)) {
@@ -95,6 +109,27 @@ app.post("/api/game/tick", (_request, response) => {
   // A tick is the backend's "next frame" of the game.
   // It moves the computer, moves the ball, and applies current bounce rules.
   currentGame = tickGame(currentGame);
+
+  response.json({
+    ok: true,
+    game: currentGame
+  });
+});
+
+app.post("/api/game/difficulty", (request, response) => {
+  if (!isDifficultyRequest(request.body)) {
+    response.status(400).json({
+      ok: false,
+      message: "Dificultad invalida",
+      game: currentGame
+    });
+    return;
+  }
+
+  currentGame = {
+    ...createInitialGameState(request.body.difficulty),
+    message: `Dificultad seleccionada: ${request.body.difficulty}.`
+  };
 
   response.json({
     ok: true,

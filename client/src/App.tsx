@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { getGameState, movePlayer, startGame, tickGame } from "./api";
-import type { GameState } from "../../shared/types";
+import { getGameState, movePlayer, setGameDifficulty, startGame, tickGame } from "./api";
+import type { GameDifficulty, GameState } from "../../shared/types";
 import "./styles/app.css";
 
 const COURT_WIDTH = 900;
@@ -128,6 +128,22 @@ function App() {
     }
   }
 
+  async function handleDifficultyChange(difficulty: GameDifficulty) {
+    setError(null);
+
+    try {
+      const response = await setGameDifficulty(difficulty);
+      setGame(response.game);
+    } catch (caughtError) {
+      const message =
+        caughtError instanceof Error
+          ? caughtError.message
+          : "No se pudo cambiar la dificultad.";
+
+      setError(message);
+    }
+  }
+
   const resultText =
     game?.winner === "player"
       ? "Gano el jugador"
@@ -196,14 +212,26 @@ function App() {
         </div>
 
         {game?.status !== "playing" && (
-          <button
-            className="start-button"
-            type="button"
-            onClick={handleStartGame}
-            disabled={isStarting}
-          >
-            {isStarting ? "Iniciando..." : startButtonText}
-          </button>
+          <div className="start-controls">
+            <select
+              value={game?.difficulty ?? "normal"}
+              onChange={(event) =>
+                void handleDifficultyChange(event.target.value as GameDifficulty)
+              }
+              disabled={isStarting}
+            >
+              <option value="easy">Facil</option>
+              <option value="normal">Normal</option>
+              <option value="hard">Dificil</option>
+            </select>
+            <button
+              type="button"
+              onClick={handleStartGame}
+              disabled={isStarting}
+            >
+              {isStarting ? "Iniciando..." : startButtonText}
+            </button>
+          </div>
         )}
 
         {resultText !== null && <p className="result-line">{resultText}</p>}

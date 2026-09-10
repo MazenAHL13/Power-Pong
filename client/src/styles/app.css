@@ -21,12 +21,24 @@ button {
   cursor: pointer;
 }
 
-button:disabled {
+select {
+  min-height: 44px;
+  border: 1px solid #1f1f1f;
+  border-radius: 6px;
+  padding: 0 12px;
+  background: #ffffff;
+  color: #1f1f1f;
+  font-weight: 700;
+}
+
+button:disabled,
+select:disabled {
   cursor: wait;
   opacity: 0.7;
 }
 
-button:focus-visible {
+button:focus-visible,
+select:focus-visible {
   outline: 3px solid #777777;
   outline-offset: 3px;
 }
@@ -114,11 +126,13 @@ button:focus-visible {
   background: #f2c94c;
 }
 
-.start-button {
+.start-controls {
   position: absolute;
   top: 50%;
   left: 50%;
   z-index: 2;
+  display: flex;
+  gap: 10px;
   transform: translate(-50%, -50%);
 }
 

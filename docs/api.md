@@ -38,6 +38,7 @@ Respuesta con error:
 ```json
 {
   "status": "ready",
+  "difficulty": "normal",
   "player": {
     "side": "player",
     "label": "Jugador",
@@ -60,17 +61,17 @@ Respuesta con error:
       "width": 18,
       "baseHeight": 96,
       "height": 96,
-      "speed": 20
+      "speed": 8
     },
     "powers": []
   },
   "ball": {
     "position": { "x": 450, "y": 260 },
-    "velocity": { "x": 7, "y": 4 },
+    "velocity": { "x": 20, "y": 4 },
     "radius": 10
   },
   "capsule": null,
-  "pointPauseTicks": 20,
+  "pointPauseTicks": 40,
   "winner": null,
   "message": "Presiona iniciar partida para jugar.",
   "updatedAt": "1970-01-01T00:00:00.000Z"
@@ -99,8 +100,8 @@ Respuesta:
 
 ## `POST /api/game/start`
 
-Crea o reinicia una partida. El estado pasa a `playing`, los puntajes vuelven a
-cero y la pelota inicia desde el centro.
+Crea o reinicia una partida usando la dificultad seleccionada. El estado pasa a
+`playing`, los puntajes vuelven a cero y la pelota inicia desde el centro.
 
 Solicitud:
 
@@ -215,9 +216,42 @@ Respuesta:
 }
 ```
 
+## `POST /api/game/difficulty`
+
+Cambia la dificultad guardada en el servidor. Para mantener el flujo simple,
+la partida vuelve a `ready` y el siguiente inicio usa esa dificultad.
+
+Solicitud:
+
+```http
+POST /api/game/difficulty
+Content-Type: application/json
+```
+
+Cuerpo:
+
+```json
+{
+  "difficulty": "easy"
+}
+```
+
+Respuesta:
+
+```json
+{
+  "ok": true,
+  "game": {
+    "status": "ready",
+    "difficulty": "easy"
+  }
+}
+```
+
 ## Valores permitidos
 
 - `status`: `ready`, `playing`, `finished`.
+- `difficulty`: `easy`, `normal`, `hard`.
 - `player`: `player`, `computer`.
 - `direction`: `up`, `down`.
 - `power`: `shield`, `turbo`.

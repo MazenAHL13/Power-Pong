@@ -1,4 +1,4 @@
-import type { ApiGameResponse, MoveDirection } from "../../shared/types";
+import type { ApiGameResponse, GameDifficulty, MoveDirection } from "../../shared/types";
 
 async function readGameResponse(response: Response): Promise<ApiGameResponse> {
   const data = (await response.json()) as ApiGameResponse;
@@ -51,6 +51,22 @@ export async function tickGame(): Promise<ApiGameResponse> {
       "Content-Type": "application/json"
     },
     body: JSON.stringify({})
+  });
+
+  return readGameResponse(response);
+}
+
+export async function setGameDifficulty(
+  difficulty: GameDifficulty
+): Promise<ApiGameResponse> {
+  const response = await fetch("/api/game/difficulty", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      difficulty
+    })
   });
 
   return readGameResponse(response);

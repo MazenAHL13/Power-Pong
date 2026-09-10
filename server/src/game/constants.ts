@@ -1,3 +1,5 @@
+import type { GameDifficulty } from "../../../shared/types.js";
+
 // Court dimensions use pixels so the backend and frontend can render the same space.
 export const COURT_WIDTH = 900;
 export const COURT_HEIGHT = 520;
@@ -23,6 +25,44 @@ export const TURBO_MULTIPLIER = 1.6;
 // Computer movement is intentionally slower than perfect tracking.
 export const COMPUTER_PADDLE_SPEED = 8;
 export const COMPUTER_REACTION_CHANCE = 0.65;
+
+export interface DifficultySettings {
+  playerPaddleHeight: number;
+  computerPaddleHeight: number;
+  computerPaddleSpeed: number;
+  computerReactionChance: number;
+  ballSpeedX: number;
+  ballSpeedY: number;
+}
+
+export const DEFAULT_DIFFICULTY: GameDifficulty = "normal";
+
+export const DIFFICULTY_SETTINGS: Record<GameDifficulty, DifficultySettings> = {
+  easy: {
+    playerPaddleHeight: 120,
+    computerPaddleHeight: 78,
+    computerPaddleSpeed: 6,
+    computerReactionChance: 0.35,
+    ballSpeedX: 16,
+    ballSpeedY: 3
+  },
+  normal: {
+    playerPaddleHeight: PADDLE_HEIGHT,
+    computerPaddleHeight: PADDLE_HEIGHT,
+    computerPaddleSpeed: COMPUTER_PADDLE_SPEED,
+    computerReactionChance: COMPUTER_REACTION_CHANCE,
+    ballSpeedX: BALL_START_SPEED_X,
+    ballSpeedY: BALL_START_SPEED_Y
+  },
+  hard: {
+    playerPaddleHeight: 84,
+    computerPaddleHeight: 116,
+    computerPaddleSpeed: 12,
+    computerReactionChance: 0.85,
+    ballSpeedX: 24,
+    ballSpeedY: 5
+  }
+};
 
 // Power and capsule rules.
 export const SHIELD_DURATION_MS = 30_000;

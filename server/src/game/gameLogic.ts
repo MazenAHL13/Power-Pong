@@ -1,12 +1,10 @@
 import {
-  BALL_START_SPEED_X,
-  BALL_START_SPEED_Y,
   CAPSULE_RADIUS,
   CAPSULE_SPAWN_CHANCE,
   CAPSULE_SPEED,
-  COMPUTER_REACTION_CHANCE,
   COURT_HEIGHT,
   COURT_WIDTH,
+  DIFFICULTY_SETTINGS,
   PADDLE_SHIELD_HEIGHT,
   POINT_PAUSE_TICKS,
   SHIELD_DURATION_MS,
@@ -200,9 +198,11 @@ export function updateShieldTimers(game: GameState, now = new Date()): GameState
 // ===== COMPUTER MOVEMENT =====
 
 export function moveComputerPaddle(game: GameState): GameState {
+  const difficultySettings = DIFFICULTY_SETTINGS[game.difficulty];
+
   // Sometimes the computer hesitates and does not move.
   // This makes it possible for the human player to score.
-  if (Math.random() > COMPUTER_REACTION_CHANCE) {
+  if (Math.random() > difficultySettings.computerReactionChance) {
     return game;
   }
 
@@ -348,6 +348,7 @@ export function moveBall(game: GameState): GameState {
 
 function resetBallAfterPoint(game: GameState, directionX: number): GameState {
   const ball = game.ball;
+  const difficultySettings = DIFFICULTY_SETTINGS[game.difficulty];
 
   return {
     ...game,
@@ -358,8 +359,8 @@ function resetBallAfterPoint(game: GameState, directionX: number): GameState {
         y: COURT_HEIGHT / 2
       },
       velocity: {
-        x: directionX * BALL_START_SPEED_X,
-        y: BALL_START_SPEED_Y
+        x: directionX * difficultySettings.ballSpeedX,
+        y: difficultySettings.ballSpeedY
       }
     },
     pointPauseTicks: POINT_PAUSE_TICKS

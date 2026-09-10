@@ -3,6 +3,8 @@ export type PlayerSide = "player" | "computer";
 
 export type GameStatus = "ready" | "playing" | "finished";
 
+export type GameDifficulty = "easy" | "normal" | "hard";
+
 export type PowerType = "shield" | "turbo";
 
 export type MoveDirection = "up" | "down";
@@ -57,6 +59,7 @@ export interface CompetitorState {
 // GameState is the complete snapshot returned by the backend after each call.
 export interface GameState {
   status: GameStatus;
+  difficulty: GameDifficulty;
   player: CompetitorState;
   computer: CompetitorState;
   ball: BallState;
