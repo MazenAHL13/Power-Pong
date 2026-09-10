@@ -122,7 +122,7 @@ Para cada tarea:
 - **Verificación:** intentar cruzar un límite devuelve error y conserva un estado válido.
 - **Depende de:** T12.
 
-### T14. Implementar el movimiento automático
+### T14. [x] Implementar el movimiento automático
 
 - **Objetivo:** mover la paleta de la computadora hacia la pelota.
 - **Conceptos:** algoritmo de seguimiento simple y velocidad limitada.

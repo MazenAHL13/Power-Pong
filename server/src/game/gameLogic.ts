@@ -7,6 +7,12 @@ interface MoveResult {
   message?: string;
 }
 
+function keepInsideCourt(y: number, paddleHeight: number): number {
+  // This is used by the computer.
+  // It keeps the paddle inside the top and bottom walls.
+  return Math.min(Math.max(y, 0), COURT_HEIGHT - paddleHeight);
+}
+
 export function movePlayerPaddle(game: GameState, action: MoveAction): MoveResult {
   // Get the human player's paddle from the current game.
   const paddle = game.player.paddle;
@@ -60,5 +66,38 @@ export function movePlayerPaddle(game: GameState, action: MoveAction): MoveResul
       // Save the time of this latest change.
       updatedAt: new Date().toISOString()
     }
+  };
+}
+
+export function moveComputerPaddle(game: GameState): GameState {
+  // The computer looks at the middle of its paddle and the middle of the ball.
+  const paddle = game.computer.paddle;
+  const paddleCenterY = paddle.position.y + paddle.height / 2;
+  const ballY = game.ball.position.y;
+
+  // If the ball is above the paddle, the computer moves up.
+  // If the ball is below the paddle, the computer moves down.
+  const distanceToBall = ballY - paddleCenterY;
+
+  // The computer is not allowed to jump straight to the ball.
+  // It can only move by its speed each update.
+  const movement =
+    Math.sign(distanceToBall) * Math.min(Math.abs(distanceToBall), paddle.speed);
+
+  const nextY = keepInsideCourt(paddle.position.y + movement, paddle.height);
+
+  return {
+    ...game,
+    computer: {
+      ...game.computer,
+      paddle: {
+        ...paddle,
+        position: {
+          ...paddle.position,
+          y: nextY
+        }
+      }
+    },
+    updatedAt: new Date().toISOString()
   };
 }
