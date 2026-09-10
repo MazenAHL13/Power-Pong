@@ -4,6 +4,7 @@ import {
   CAPSULE_RADIUS,
   CAPSULE_SPAWN_CHANCE,
   CAPSULE_SPEED,
+  COMPUTER_REACTION_CHANCE,
   COURT_HEIGHT,
   COURT_WIDTH,
   PADDLE_SHIELD_HEIGHT,
@@ -198,6 +199,12 @@ export function updateShieldTimers(game: GameState, now = new Date()): GameState
 // ===== COMPUTER MOVEMENT =====
 
 export function moveComputerPaddle(game: GameState): GameState {
+  // Sometimes the computer hesitates and does not move.
+  // This makes it possible for the human player to score.
+  if (Math.random() > COMPUTER_REACTION_CHANCE) {
+    return game;
+  }
+
   // The computer looks at the middle of its paddle and the middle of the ball.
   const paddle = game.computer.paddle;
   const paddleCenterY = paddle.position.y + paddle.height / 2;
