@@ -240,7 +240,7 @@ Para cada tarea:
 
 ## Fase 5: Frontend
 
-### T28. Crear el cliente API
+### T28. [x] Crear el cliente API
 
 - **Objetivo:** centralizar llamadas `fetch`, JSON y errores.
 - **Conceptos:** funciones asíncronas y contratos compartidos.

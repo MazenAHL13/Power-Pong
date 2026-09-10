@@ -11,7 +11,13 @@ import {
   PADDLE_WIDTH,
   PLAYER_PADDLE_X
 } from "./constants.js";
-import type { CompetitorState, GameState, PaddleState, PlayerSide, PowerState } from "./types.js";
+import type {
+  CompetitorState,
+  GameState,
+  PaddleState,
+  PlayerSide,
+  PowerState
+} from "../../../shared/types.js";
 
 function createPaddle(side: PlayerSide): PaddleState {
   const x = side === "player" ? PLAYER_PADDLE_X : COMPUTER_PADDLE_X;

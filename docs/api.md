@@ -31,7 +31,7 @@ Respuesta con error:
 }
 ```
 
-`game` representa el `GameState` definido en `server/src/game/types.ts`.
+`game` representa el `GameState` definido en `shared/types.ts`.
 
 ## GameState resumido
 

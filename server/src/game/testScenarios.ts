@@ -5,7 +5,7 @@ import {
   COURT_WIDTH,
   WINNING_SCORE
 } from "./constants.js";
-import type { GameState, PowerType } from "./types.js";
+import type { GameState, PowerType } from "../../../shared/types.js";
 
 type TestScenarioName =
   | "playerCapsule"

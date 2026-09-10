@@ -1,4 +1,4 @@
-// Basic vocabulary shared by the game rules and API responses.
+// Basic vocabulary shared by the backend rules and frontend rendering.
 export type PlayerSide = "player" | "computer";
 
 export type GameStatus = "ready" | "playing" | "finished";
@@ -67,7 +67,7 @@ export interface GameState {
 
 // Actions describe the commands a client is allowed to send to the backend.
 export interface MoveAction {
-  player: PlayerSide;
+  player: "player";
   type: "move";
   direction: MoveDirection;
 }

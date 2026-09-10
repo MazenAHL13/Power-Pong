@@ -1,10 +1,9 @@
 import express from "express";
-import { fileURLToPath } from "node:url";
 import path from "node:path";
 import { createInitialGameState, createStartedGameState } from "./game/gameState.js";
 import { movePlayerPaddle, tickGame } from "./game/gameLogic.js";
 import { applyTestScenario, isTestScenarioRequest } from "./game/testScenarios.js";
-import type { MoveAction } from "./game/types.js";
+import type { MoveAction } from "../../shared/types.js";
 
 const app = express();
 const port = Number(process.env.PORT ?? 3000);
@@ -128,9 +127,7 @@ app.post("/api/test/scenario", (request, response) => {
   });
 });
 
-const currentFile = fileURLToPath(import.meta.url);
-const currentDir = path.dirname(currentFile);
-const clientDist = path.resolve(currentDir, "../../client/dist");
+const clientDist = path.resolve(process.cwd(), "../client/dist");
 
 app.use(express.static(clientDist));
 

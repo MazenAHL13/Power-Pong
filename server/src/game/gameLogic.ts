@@ -16,7 +16,7 @@ import type {
   MoveAction,
   PaddleState,
   PowerType
-} from "./types.js";
+} from "../../../shared/types.js";
 
 // ===== TYPES USED ONLY IN THIS FILE =====
 
