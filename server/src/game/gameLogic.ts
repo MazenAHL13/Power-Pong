@@ -5,6 +5,9 @@ import {
   CAPSULE_SPAWN_CHANCE,
   COURT_HEIGHT,
   COURT_WIDTH,
+  PADDLE_SHIELD_HEIGHT,
+  SHIELD_DURATION_MS,
+  TURBO_MULTIPLIER,
   WINNING_SCORE
 } from "./constants.js";
 import type {
@@ -17,7 +20,7 @@ import type {
 
 // ===== TYPES USED ONLY IN THIS FILE =====
 
-interface MoveResult {
+interface ActionResult {
   ok: boolean;
   game: GameState;
   message?: string;
@@ -35,7 +38,7 @@ function keepInsideCourt(y: number, paddleHeight: number): number {
 
 // ===== PLAYER MOVEMENT =====
 
-export function movePlayerPaddle(game: GameState, action: MoveAction): MoveResult {
+export function movePlayerPaddle(game: GameState, action: MoveAction): ActionResult {
   // After someone wins, the player cannot keep moving the paddle.
   if (game.status === "finished") {
     const message = "La partida ya termino.";
@@ -102,6 +105,92 @@ export function movePlayerPaddle(game: GameState, action: MoveAction): MoveResul
       // Save the time of this latest change.
       updatedAt: new Date().toISOString()
     }
+  };
+}
+
+// ===== POWERS =====
+
+function isPowerActive(competitor: CompetitorState, powerType: PowerType): boolean {
+  return competitor.powers.some((power) => power.type === powerType && power.active);
+}
+
+function updatePower(
+  competitor: CompetitorState,
+  powerType: PowerType,
+  update: {
+    active: boolean;
+    remainingMs: number;
+  }
+): CompetitorState {
+  return {
+    ...competitor,
+    powers: competitor.powers.map((power) => {
+      if (power.type !== powerType) {
+        return power;
+      }
+
+      return {
+        ...power,
+        ...update
+      };
+    })
+  };
+}
+
+function consumeTurbo(competitor: CompetitorState): CompetitorState {
+  return updatePower(competitor, "turbo", {
+    active: false,
+    remainingMs: 0
+  });
+}
+
+export function updateShieldTimers(game: GameState, now = new Date()): GameState {
+  const elapsedMs = Math.max(0, now.getTime() - Date.parse(game.updatedAt));
+
+  if (elapsedMs === 0) {
+    return game;
+  }
+
+  const updateCompetitorShield = (competitor: CompetitorState): CompetitorState => {
+    const shield = competitor.powers.find((power) => power.type === "shield");
+
+    if (shield === undefined || !shield.active) {
+      return competitor;
+    }
+
+    const remainingMs = Math.max(0, shield.remainingMs - elapsedMs);
+    const shieldExpired = remainingMs === 0;
+    const height = shieldExpired ? competitor.paddle.baseHeight : competitor.paddle.height;
+
+    return {
+      ...competitor,
+      paddle: {
+        ...competitor.paddle,
+        height,
+        position: {
+          ...competitor.paddle.position,
+          y: keepInsideCourt(competitor.paddle.position.y, height)
+        }
+      },
+      powers: competitor.powers.map((power) => {
+        if (power.type !== "shield") {
+          return power;
+        }
+
+        return {
+          ...power,
+          active: !shieldExpired,
+          remainingMs
+        };
+      })
+    };
+  };
+
+  return {
+    ...game,
+    player: updateCompetitorShield(game.player),
+    computer: updateCompetitorShield(game.computer),
+    updatedAt: now.toISOString()
   };
 }
 
@@ -200,16 +289,37 @@ export function moveBall(game: GameState): GameState {
     // Player paddle sends the ball back to the right.
     nextX = game.player.paddle.position.x + game.player.paddle.width + ball.radius;
     nextVelocityX = Math.abs(ball.velocity.x);
+
+    if (isPowerActive(game.player, "turbo")) {
+      nextVelocityX *= TURBO_MULTIPLIER;
+    }
   }
 
   if (hitsComputerPaddle) {
     // Computer paddle sends the ball back to the left.
     nextX = game.computer.paddle.position.x - ball.radius;
     nextVelocityX = -Math.abs(ball.velocity.x);
+
+    if (isPowerActive(game.computer, "turbo")) {
+      nextVelocityX *= TURBO_MULTIPLIER;
+    }
+  }
+
+  let player = game.player;
+  let computer = game.computer;
+
+  if (hitsPlayerPaddle && isPowerActive(player, "turbo")) {
+    player = consumeTurbo(player);
+  }
+
+  if (hitsComputerPaddle && isPowerActive(computer, "turbo")) {
+    computer = consumeTurbo(computer);
   }
 
   return {
     ...game,
+    player,
+    computer,
     ball: {
       ...ball,
       position: {
@@ -333,25 +443,35 @@ function paddleTouchesCapsule(paddle: PaddleState, game: GameState): boolean {
   );
 }
 
-function givePowerToCompetitor(
+function activatePowerForCompetitor(
   competitor: CompetitorState,
   powerType: PowerType
 ): CompetitorState {
-  return {
-    ...competitor,
-    powers: competitor.powers.map((power) => {
-      if (power.type !== powerType) {
-        return power;
+  if (powerType === "shield") {
+    return updatePower(
+      {
+        ...competitor,
+        paddle: {
+          ...competitor.paddle,
+          height: PADDLE_SHIELD_HEIGHT,
+          position: {
+            ...competitor.paddle.position,
+            y: keepInsideCourt(competitor.paddle.position.y, PADDLE_SHIELD_HEIGHT)
+          }
+        }
+      },
+      "shield",
+      {
+        active: true,
+        remainingMs: SHIELD_DURATION_MS
       }
+    );
+  }
 
-      return {
-        ...power,
-        available: true,
-        active: false,
-        remainingMs: 0
-      };
-    })
-  };
+  return updatePower(competitor, "turbo", {
+    active: true,
+    remainingMs: 0
+  });
 }
 
 export function collectCapsuleIfNeeded(game: GameState): GameState {
@@ -364,9 +484,9 @@ export function collectCapsuleIfNeeded(game: GameState): GameState {
   if (paddleTouchesCapsule(game.player.paddle, game)) {
     return {
       ...game,
-      player: givePowerToCompetitor(game.player, capsuleType),
+      player: activatePowerForCompetitor(game.player, capsuleType),
       capsule: null,
-      message: `Jugador recogio ${capsuleType}.`,
+      message: `Jugador activo ${capsuleType}.`,
       updatedAt: new Date().toISOString()
     };
   }
@@ -374,9 +494,9 @@ export function collectCapsuleIfNeeded(game: GameState): GameState {
   if (paddleTouchesCapsule(game.computer.paddle, game)) {
     return {
       ...game,
-      computer: givePowerToCompetitor(game.computer, capsuleType),
+      computer: activatePowerForCompetitor(game.computer, capsuleType),
       capsule: null,
-      message: `Computadora recogio ${capsuleType}.`,
+      message: `Computadora activo ${capsuleType}.`,
       updatedAt: new Date().toISOString()
     };
   }
@@ -427,9 +547,12 @@ export function tickGame(game: GameState): GameState {
     return game;
   }
 
+  // First update shield timers so expired shields shrink before movement happens.
+  const gameAfterTimers = updateShieldTimers(game);
+
   // One tick is one small update of the game.
-  // First the computer reacts to the current ball position.
-  const gameAfterComputerMove = moveComputerPaddle(game);
+  // The computer reacts to the current ball position.
+  const gameAfterComputerMove = moveComputerPaddle(gameAfterTimers);
 
   // Then the ball moves and handles wall/paddle bounces.
   const gameAfterBallMove = moveBall(gameAfterComputerMove);

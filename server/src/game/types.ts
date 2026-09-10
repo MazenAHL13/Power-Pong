@@ -29,10 +29,9 @@ export interface PaddleState {
   speed: number;
 }
 
-// Powers can be waiting to use, currently active, or expired by remaining time.
+// Powers are inactive until a capsule is collected, then active until they expire.
 export interface PowerState {
   type: PowerType;
-  available: boolean;
   active: boolean;
   remainingMs: number;
 }
@@ -73,13 +72,7 @@ export interface MoveAction {
   direction: MoveDirection;
 }
 
-export interface UsePowerAction {
-  player: PlayerSide;
-  type: "usePower";
-  power: PowerType;
-}
-
-export type GameAction = MoveAction | UsePowerAction;
+export type GameAction = MoveAction;
 
 // API responses always include the current game so the client can re-render.
 export interface ApiGameResponse {

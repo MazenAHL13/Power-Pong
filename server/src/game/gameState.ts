@@ -32,7 +32,6 @@ function createPaddle(side: PlayerSide): PaddleState {
 function createPower(type: PowerState["type"]): PowerState {
   return {
     type,
-    available: false,
     active: false,
     remainingMs: 0
   };

@@ -214,7 +214,7 @@ Para cada tarea:
 - **Verificación:** una cápsula recogida no puede recogerse dos veces.
 - **Depende de:** T23.
 
-### T25. Implementar el escudo
+### T25. [x] Implementar el escudo
 
 - **Objetivo:** aumentar la paleta durante 30 segundos y luego restaurarla.
 - **Conceptos:** tiempo, expiración y estado derivado.
@@ -222,7 +222,7 @@ Para cada tarea:
 - **Verificación:** comprobar activación y expiración con un reloj controlable.
 - **Depende de:** T24.
 
-### T26. Implementar el golpe turbo
+### T26. [x] Implementar el golpe turbo
 
 - **Objetivo:** acelerar la pelota en el siguiente impacto y consumir el poder.
 - **Conceptos:** recurso de un solo uso y efecto diferido.

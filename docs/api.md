@@ -148,8 +148,8 @@ Respuesta:
 
 ## `POST /api/game/action`
 
-Recibe una accion del jugador. Por ahora el contrato permite mover la paleta y
-usar un poder.
+Recibe una accion del jugador. Por ahora el contrato permite mover la paleta.
+Los poderes se activan automaticamente cuando una paleta recoge una capsula.
 
 Solicitud:
 
@@ -165,16 +165,6 @@ Movimiento:
   "player": "player",
   "type": "move",
   "direction": "up"
-}
-```
-
-Uso de poder:
-
-```json
-{
-  "player": "player",
-  "type": "usePower",
-  "power": "turbo"
 }
 ```
 
