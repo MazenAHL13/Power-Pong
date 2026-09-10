@@ -64,24 +64,31 @@ select:focus-visible {
 
 .scoreboard {
   position: absolute;
-  top: 24px;
+  top: 8px;
   left: 50%;
   z-index: 2;
   display: flex;
   align-items: center;
-  gap: 18px;
+  gap: 14px;
   margin: 0;
+  border: 2px solid #ffffff;
+  border-radius: 6px;
+  padding: 4px 12px;
+  background: rgb(17 17 17 / 0.78);
   color: #ffffff;
   transform: translateX(-50%);
 }
 
 .scoreboard span {
-  font-size: 0.9rem;
+  min-width: 84px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-align: center;
 }
 
 .scoreboard strong {
-  min-width: 110px;
-  font-size: 2.5rem;
+  min-width: 88px;
+  font-size: 1.9rem;
   text-align: center;
 }
 
