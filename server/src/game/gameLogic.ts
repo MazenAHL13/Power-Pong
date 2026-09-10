@@ -1,5 +1,5 @@
 import { COURT_HEIGHT } from "./constants.js";
-import type { GameState, MoveAction } from "./types.js";
+import type { GameState, MoveAction, PaddleState } from "./types.js";
 
 interface MoveResult {
   ok: boolean;
@@ -11,6 +11,31 @@ function keepInsideCourt(y: number, paddleHeight: number): number {
   // This is used by the computer.
   // It keeps the paddle inside the top and bottom walls.
   return Math.min(Math.max(y, 0), COURT_HEIGHT - paddleHeight);
+}
+
+function ballTouchesPaddle(
+  ballX: number,
+  ballY: number,
+  ballRadius: number,
+  paddle: PaddleState
+): boolean {
+  // This checks whether the ball's small square area overlaps the paddle rectangle.
+  const ballLeft = ballX - ballRadius;
+  const ballRight = ballX + ballRadius;
+  const ballTop = ballY - ballRadius;
+  const ballBottom = ballY + ballRadius;
+
+  const paddleLeft = paddle.position.x;
+  const paddleRight = paddle.position.x + paddle.width;
+  const paddleTop = paddle.position.y;
+  const paddleBottom = paddle.position.y + paddle.height;
+
+  return (
+    ballRight >= paddleLeft &&
+    ballLeft <= paddleRight &&
+    ballBottom >= paddleTop &&
+    ballTop <= paddleBottom
+  );
 }
 
 export function movePlayerPaddle(game: GameState, action: MoveAction): MoveResult {
@@ -104,7 +129,9 @@ export function moveComputerPaddle(game: GameState): GameState {
 
 export function moveBall(game: GameState): GameState {
   const ball = game.ball;
+  let nextX = ball.position.x + ball.velocity.x;
   let nextY = ball.position.y + ball.velocity.y;
+  let nextVelocityX = ball.velocity.x;
   let nextVelocityY = ball.velocity.y;
 
   // If the ball touches the top wall, place it on the wall
@@ -121,16 +148,36 @@ export function moveBall(game: GameState): GameState {
     nextVelocityY = -Math.abs(ball.velocity.y);
   }
 
+  const hitsPlayerPaddle =
+    ball.velocity.x < 0 &&
+    ballTouchesPaddle(nextX, nextY, ball.radius, game.player.paddle);
+
+  const hitsComputerPaddle =
+    ball.velocity.x > 0 &&
+    ballTouchesPaddle(nextX, nextY, ball.radius, game.computer.paddle);
+
+  if (hitsPlayerPaddle) {
+    // Player paddle sends the ball back to the right.
+    nextX = game.player.paddle.position.x + game.player.paddle.width + ball.radius;
+    nextVelocityX = Math.abs(ball.velocity.x);
+  }
+
+  if (hitsComputerPaddle) {
+    // Computer paddle sends the ball back to the left.
+    nextX = game.computer.paddle.position.x - ball.radius;
+    nextVelocityX = -Math.abs(ball.velocity.x);
+  }
+
   return {
     ...game,
     ball: {
       ...ball,
       position: {
-        x: ball.position.x + ball.velocity.x,
+        x: nextX,
         y: nextY
       },
       velocity: {
-        ...ball.velocity,
+        x: nextVelocityX,
         y: nextVelocityY
       }
     },

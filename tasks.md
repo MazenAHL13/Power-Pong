@@ -148,7 +148,7 @@ Para cada tarea:
 - **Verificación:** probar posiciones cercanas a ambos límites.
 - **Depende de:** T15.
 
-### T17. Implementar colisiones con paletas
+### T17. [x] Implementar colisiones con paletas
 
 - **Objetivo:** detectar contacto entre pelota y paleta e invertir su dirección horizontal.
 - **Conceptos:** detección de rectángulos y zonas de colisión.
