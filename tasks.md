@@ -172,7 +172,7 @@ Para cada tarea:
 - **Verificación:** simular salida izquierda y derecha.
 - **Depende de:** T18.
 
-### T20. Reiniciar la pelota después de un punto
+### T20. [x] Reiniciar la pelota después de un punto
 
 - **Objetivo:** devolver la pelota al centro con nueva dirección.
 - **Conceptos:** reset de estado y variabilidad controlada.

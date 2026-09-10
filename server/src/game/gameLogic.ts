@@ -1,4 +1,9 @@
-import { COURT_HEIGHT, COURT_WIDTH } from "./constants.js";
+import {
+  BALL_START_SPEED_X,
+  BALL_START_SPEED_Y,
+  COURT_HEIGHT,
+  COURT_WIDTH
+} from "./constants.js";
 import type { GameState, MoveAction, PaddleState } from "./types.js";
 
 // ===== TYPES USED ONLY IN THIS FILE =====
@@ -197,6 +202,25 @@ export function moveBall(game: GameState): GameState {
 
 // ===== SCORING =====
 
+function resetBallAfterPoint(game: GameState, directionX: number): GameState {
+  const ball = game.ball;
+
+  return {
+    ...game,
+    ball: {
+      ...ball,
+      position: {
+        x: COURT_WIDTH / 2,
+        y: COURT_HEIGHT / 2
+      },
+      velocity: {
+        x: directionX * BALL_START_SPEED_X,
+        y: BALL_START_SPEED_Y
+      }
+    }
+  };
+}
+
 function scorePointIfNeeded(game: GameState): GameState {
   const ball = game.ball;
   const ballExitedLeft = ball.position.x + ball.radius < 0;
@@ -208,49 +232,31 @@ function scorePointIfNeeded(game: GameState): GameState {
 
   // If the ball leaves the left side, the computer scores.
   if (ballExitedLeft) {
-    return {
+    const gameWithPoint = {
       ...game,
       computer: {
         ...game.computer,
         score: game.computer.score + 1
       },
-      ball: {
-        ...ball,
-        position: {
-          ...ball.position,
-          x: -ball.radius
-        },
-        velocity: {
-          ...ball.velocity,
-          x: 0
-        }
-      },
       message: "Punto para la computadora.",
       updatedAt: new Date().toISOString()
     };
+
+    return resetBallAfterPoint(gameWithPoint, -1);
   }
 
   // If the ball leaves the right side, the player scores.
-  return {
+  const gameWithPoint = {
     ...game,
     player: {
       ...game.player,
       score: game.player.score + 1
     },
-    ball: {
-      ...ball,
-      position: {
-        ...ball.position,
-        x: COURT_WIDTH + ball.radius
-      },
-      velocity: {
-        ...ball.velocity,
-        x: 0
-      }
-    },
     message: "Punto para el jugador.",
     updatedAt: new Date().toISOString()
   };
+
+  return resetBallAfterPoint(gameWithPoint, 1);
 }
 
 // ===== TICK / ONE GAME UPDATE =====
