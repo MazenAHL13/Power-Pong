@@ -114,7 +114,7 @@ Para cada tarea:
 - **Verificación:** enviar una acción válida cambia la posición.
 - **Depende de:** T10 y T11.
 
-### T13. Validar movimientos inválidos
+### T13. [x] Validar movimientos inválidos
 
 - **Objetivo:** impedir que la paleta salga de la cancha.
 - **Conceptos:** reglas de validación y feedback de error.

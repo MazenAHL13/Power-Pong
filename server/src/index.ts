@@ -75,15 +75,19 @@ app.post("/api/game/action", (request, response) => {
     return;
   }
 
-  // If the move is valid, we calculate the new paddle position
-  // and save the updated game back into server memory.
-  currentGame = movePlayerPaddle(currentGame, request.body);
+  // Ask the game logic to try the movement.
+  // It will tell us if the paddle was allowed to move.
+  const result = movePlayerPaddle(currentGame, request.body);
+
+  currentGame = result.game;
+
+  if (!result.ok) {
+    response.status(400).json(result);
+    return;
+  }
 
   // Send the updated game back so the frontend can redraw the screen.
-  response.json({
-    ok: true,
-    game: currentGame
-  });
+  response.json(result);
 });
 
 const currentFile = fileURLToPath(import.meta.url);
