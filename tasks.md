@@ -272,12 +272,12 @@ Para cada tarea:
 - **Verificación:** cambiar puntajes o ganador en el estado cambia la UI.
 - **Depende de:** T30.
 
-### T32. Renderizar poderes y temporizadores
+### T32. [x] Renderizar poderes de forma simple
 
-- **Objetivo:** mostrar cápsulas, turbo disponible y escudo activo.
-- **Conceptos:** estados visuales y tiempo restante.
-- **Resultado:** el usuario entiende cuándo puede usar un poder.
-- **Verificación:** probar estados disponible, activo y consumido.
+- **Objetivo:** mostrar la cápsula en la cancha con un color distinto según sea `shield` o `turbo`.
+- **Conceptos:** renderizado condicional y clases CSS simples.
+- **Resultado:** el usuario ve la cápsula; al tocar una paleta, el backend activa el poder automáticamente sin botones ni paneles extra.
+- **Verificación:** probar que una cápsula `shield` y una cápsula `turbo` se ven con colores distintos.
 - **Depende de:** T31 y T25-T26.
 
 ### T33. Capturar controles del teclado

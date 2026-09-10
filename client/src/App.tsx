@@ -107,7 +107,7 @@ function App() {
               />
               {game.capsule !== null && (
                 <div
-                  className="capsule"
+                  className={`capsule capsule-${game.capsule.type}`}
                   style={{
                     left: `${(game.capsule.position.x / COURT_WIDTH) * 100}%`,
                     top: `${(game.capsule.position.y / COURT_HEIGHT) * 100}%`,
