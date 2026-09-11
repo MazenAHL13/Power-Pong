@@ -34,3 +34,21 @@ La aplicacion usara una sola URL en produccion: Express servira la API JSON y el
 El repositorio de GitHub debe estar actualizado como maximo hasta el 15 de septiembre de 2026 a horas 16:00, segun GitHub. La defensa dura maximo 10 minutos e incluye una prueba E2E visual contra produccion y un cambio solicitado que debe pasar lint, E2E headless y deployment.
 
 Tambien se debe preparar un video de 3 a 5 minutos mostrando una partida, una solicitud JSON, una prueba E2E en Chrome, GitHub Actions y la aplicacion publicada.
+
+## GitHub Actions y despliegue
+
+El repositorio incluye tres workflows:
+
+- `Lint`: ejecuta `npm run lint` para frontend y backend.
+- `E2E`: instala Chromium y ejecuta `npm run test:e2e` en modo headless.
+- `Deploy`: ejecuta `npm run build` y activa el despliegue mediante un deploy hook de Render.
+
+Para que `Deploy` publique la aplicacion, GitHub debe tener el secreto
+`RENDER_DEPLOY_HOOK_URL` con la URL del deploy hook del servicio en Render.
+
+Para ejecutar la prueba E2E visual contra la aplicacion publicada durante la
+defensa:
+
+```bash
+PLAYWRIGHT_BASE_URL=https://TU-URL-PUBLICA npm run test:e2e:prod
+```

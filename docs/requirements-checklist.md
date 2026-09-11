@@ -47,13 +47,13 @@ Este checklist conecta los requisitos del PDF del examen con la decision de proy
 ## Pruebas, CI y despliegue
 
 - [x] Pruebas E2E con Playwright, Cypress o herramienta equivalente.
-- [ ] E2E cubre inicio, interaccion principal, comunicacion backend y finalizacion o validacion.
-- [ ] E2E corre headless en GitHub Actions.
-- [ ] E2E corre visualmente en Chrome durante la defensa.
-- [ ] E2E puede demostrar comportamiento contra la URL publicada.
-- [ ] GitHub Actions de linting para frontend y backend.
-- [ ] GitHub Actions de E2E.
-- [ ] GitHub Actions de deployment.
+- [x] E2E cubre inicio, interaccion principal, comunicacion backend y finalizacion o validacion.
+- [x] E2E corre headless en GitHub Actions.
+- [x] E2E corre visualmente en Chrome durante la defensa.
+- [x] E2E puede demostrar comportamiento contra la URL publicada.
+- [x] GitHub Actions de linting para frontend y backend.
+- [x] GitHub Actions de E2E.
+- [x] GitHub Actions de deployment.
 - [ ] Aplicacion completa publicada en URL funcional.
 - [ ] Deployment permite reflejar un cambio solicitado durante la defensa.
 

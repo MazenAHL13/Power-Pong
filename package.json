@@ -15,7 +15,9 @@
     "lint": "npm run lint --workspaces --if-present",
     "start": "npm run start --workspace server",
     "check": "npm run lint && npm run build",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "test:e2e:headed": "E2E_PAUSE_MS=2500 playwright test --headed --browser=chromium",
+    "test:e2e:prod": "E2E_PAUSE_MS=2500 playwright test --headed --browser=chromium"
   },
   "devDependencies": {
     "@eslint/js": "^9.35.0",
