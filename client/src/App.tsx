@@ -213,24 +213,32 @@ function App() {
 
         {game?.status !== "playing" && (
           <div className="start-controls">
-            <select
-              value={game?.difficulty ?? "normal"}
-              onChange={(event) =>
-                void handleDifficultyChange(event.target.value as GameDifficulty)
-              }
-              disabled={isStarting}
-            >
-              <option value="easy">Facil</option>
-              <option value="normal">Normal</option>
-              <option value="hard">Dificil</option>
-            </select>
-            <button
-              type="button"
-              onClick={handleStartGame}
-              disabled={isStarting}
-            >
-              {isStarting ? "Iniciando..." : startButtonText}
-            </button>
+            <div className="instructions-card">
+              <p>Usa W y S para mover tu paleta.</p>
+              <p>Recoge capsulas azules/amarillas.</p>
+              <p>Azul = escudo, amarillo = turbo.</p>
+              <p>Primero en llegar a 7 gana.</p>
+            </div>
+            <div className="start-actions">
+              <select
+                value={game?.difficulty ?? "normal"}
+                onChange={(event) =>
+                  void handleDifficultyChange(event.target.value as GameDifficulty)
+                }
+                disabled={isStarting}
+              >
+                <option value="easy">Facil</option>
+                <option value="normal">Normal</option>
+                <option value="hard">Dificil</option>
+              </select>
+              <button
+                type="button"
+                onClick={handleStartGame}
+                disabled={isStarting}
+              >
+                {isStarting ? "Iniciando..." : startButtonText}
+              </button>
+            </div>
           </div>
         )}
 
