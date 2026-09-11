@@ -151,6 +151,14 @@ function App() {
         ? "Gano la computadora"
         : null;
   const startButtonText = game?.status === "finished" ? "Reiniciar partida" : "Iniciar partida";
+  const statusText =
+    game?.status === "ready"
+      ? "Listo"
+      : game?.status === "playing"
+        ? "Jugando"
+        : game?.status === "finished"
+          ? "Terminado"
+          : "Cargando";
 
   return (
     <main className="app-shell">
@@ -209,6 +217,10 @@ function App() {
           <span>{game?.player.label ?? "Jugador"}</span>
           <strong>{game === null ? "0 - 0" : `${game.player.score} - ${game.computer.score}`}</strong>
           <span>{game?.computer.label ?? "Computadora"}</span>
+        </div>
+
+        <div className="status-badge" aria-live="polite">
+          Estado: {statusText}
         </div>
 
         {game?.status !== "playing" && (
