@@ -16,7 +16,7 @@ Este checklist conecta los requisitos del PDF del examen con la decision de proy
 - [x] Empate definido como no aplicable por regla normal: cada punto pertenece a un solo competidor y gana quien llega primero a 7.
 - [x] Decisiones estrategicas: defender, buscar capsulas, conservar turbo y posicionarse para forzar puntos.
 - [x] Variabilidad por capsulas aleatorias y comportamiento variable de la computadora.
-- [ ] Retroalimentacion visual sin depender de la consola.
+- [x] Retroalimentacion visual sin depender de la consola.
 - [x] Recursos graficos o imagenes visibles del juego.
 
 ## Tecnica
@@ -34,14 +34,14 @@ Este checklist conecta los requisitos del PDF del examen con la decision de proy
 
 ## Documentacion
 
-- [ ] README con requisitos, comandos, arquitectura, endpoints JSON, variables de entorno y enlace al despliegue.
-- [ ] `docs/introduccion.md` con proposito y experiencia.
-- [ ] `docs/reglas.md` con jugadores, reglas, victoria, empate, movimientos, estados e interaccion.
+- [x] README con requisitos, comandos, arquitectura, endpoints JSON, variables de entorno y enlace al despliegue.
+- [x] `docs/introduccion.md` con proposito y experiencia.
+- [x] `docs/reglas.md` con jugadores, reglas, victoria, empate, movimientos, estados e interaccion.
 - [x] `docs/api.md` con endpoints, metodo, entrada, salida y ejemplos JSON.
-- [ ] `docs/decisiones.md` con decisiones tecnicas, justificacion y cambios importantes.
-- [ ] `docs/riesgos.md` con riesgos y mitigaciones.
-- [ ] `docs/investigacion.md` con pruebas E2E, publicacion, fuentes, puerto, variables y limitaciones.
-- [ ] `docs/uso-ia.md` con solicitudes relevantes, respuestas incorporadas y verificaciones del estudiante.
+- [x] `docs/decisiones.md` con decisiones tecnicas, justificacion y cambios importantes.
+- [x] `docs/riesgos.md` con riesgos y mitigaciones.
+- [x] `docs/investigacion.md` con pruebas E2E, publicacion, fuentes, puerto, variables y limitaciones.
+- [x] `docs/uso-ia.md` con solicitudes relevantes, respuestas incorporadas y verificaciones del estudiante.
 - [x] No se usa Docker; documentar Dockerfile, puerto, variables, build y ejecucion local no aplica.
 
 ## Pruebas, CI y despliegue

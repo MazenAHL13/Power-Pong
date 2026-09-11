@@ -262,6 +262,92 @@ Cuerpo:
 
 ```json
 {
+  "difficulty": "normal"
+}
+```
+
+Valores validos:
+
+```text
+easy
+normal
+hard
+```
+
+Respuesta exitosa:
+
+```json
+{
+  "ok": true,
+  "game": {
+    "status": "ready",
+    "difficulty": "normal"
+  }
+}
+```
+
+Respuesta invalida:
+
+```json
+{
+  "ok": false,
+  "message": "Dificultad invalida",
+  "game": {}
+}
+```
+
+## `POST /api/test/scenario`
+
+Ruta exclusiva para pruebas automatizadas. Solo funciona cuando el servidor se
+ejecuta con `TEST_MODE=true`. En modo normal responde `404`.
+
+Solicitud:
+
+```http
+POST /api/test/scenario
+Content-Type: application/json
+```
+
+Cuerpo:
+
+```json
+{
+  "scenario": "playerCapsule",
+  "power": "shield"
+}
+```
+
+Escenarios validos:
+
+```text
+playerCapsule
+computerCapsule
+playerPoint
+computerPoint
+playerNearWin
+computerNearWin
+```
+
+Poderes validos:
+
+```text
+shield
+turbo
+```
+
+Respuesta:
+
+```json
+{
+  "ok": true,
+  "game": {}
+}
+```
+
+Cuerpo:
+
+```json
+{
   "difficulty": "easy"
 }
 ```
