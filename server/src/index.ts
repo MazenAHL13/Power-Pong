@@ -1,5 +1,7 @@
 import express from "express";
+import { existsSync } from "node:fs";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 import { createInitialGameState, createStartedGameState } from "./game/gameState.js";
 import { movePlayerPaddle, tickGame } from "./game/gameLogic.js";
 import { applyTestScenario, isTestScenarioRequest } from "./game/testScenarios.js";
@@ -173,7 +175,15 @@ app.post("/api/test/scenario", (request, response) => {
   });
 });
 
-const clientDist = path.resolve(process.cwd(), "../client/dist");
+const currentFile = fileURLToPath(import.meta.url);
+const currentDir = path.dirname(currentFile);
+const clientDistCandidates = [
+  path.resolve(process.cwd(), "client/dist"),
+  path.resolve(process.cwd(), "../client/dist"),
+  path.resolve(currentDir, "../../../../client/dist"),
+  path.resolve(currentDir, "../../client/dist")
+];
+const clientDist = clientDistCandidates.find((candidate) => existsSync(candidate)) ?? clientDistCandidates[0];
 
 app.use(express.static(clientDist));
 
