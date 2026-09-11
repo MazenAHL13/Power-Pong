@@ -54,8 +54,8 @@ Este checklist conecta los requisitos del PDF del examen con la decision de proy
 - [x] GitHub Actions de linting para frontend y backend.
 - [x] GitHub Actions de E2E.
 - [x] GitHub Actions de deployment.
-- [ ] Aplicacion completa publicada en URL funcional.
-- [ ] Deployment permite reflejar un cambio solicitado durante la defensa.
+- [x] Aplicacion completa publicada en URL funcional.
+- [x] Deployment permite reflejar un cambio solicitado durante la defensa.
 
 ## Entrega y defensa
 
