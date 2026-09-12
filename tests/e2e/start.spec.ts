@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import type { ApiGameResponse } from "../../shared/types";
+import type { ApiGameResponse, PowerType } from "../../shared/types";
 
 const defensePauseMs = Number(process.env.E2E_PAUSE_MS ?? 1200);
 const usesPublishedUrl = process.env.PLAYWRIGHT_BASE_URL !== undefined;
@@ -10,7 +10,7 @@ async function pauseForDefense() {
   });
 }
 
-test("loads the court, starts the game, and shows movement", async ({ page }) => {
+test("runs the Power Pong Arena presentation flow", async ({ page }) => {
   await page.goto("/");
 
   await expect(page.locator(".court")).toBeVisible();
@@ -44,34 +44,31 @@ test("loads the court, starts the game, and shows movement", async ({ page }) =>
   expect(movedPaddleBox).not.toBeNull();
   expect(firstBallBox).not.toBeNull();
   expect(movedBallBox).not.toBeNull();
-
   expect(movedPaddleBox?.y).not.toBe(firstPaddleBox?.y);
   expect(movedBallBox?.x).not.toBe(firstBallBox?.x);
 
   await page.keyboard.press("W");
   await pauseForDefense();
 
-  await pauseForDefense();
-});
+  if (usesPublishedUrl) {
+    return;
+  }
 
-test.skip(usesPublishedUrl, "Power-up scenarios use the local test-mode endpoint.");
+  async function applyPowerScenario(power: PowerType) {
+    const response = await page.request.post("/api/test/scenario", {
+      data: {
+        scenario: "playerCapsule",
+        power
+      }
+    });
 
-test("collects the shield power-up and grows the player paddle", async ({ page }) => {
-  await page.goto("/");
-  await page.getByRole("button", { name: "Iniciar partida" }).click();
-  await expect(page.getByText("Estado: Jugando")).toBeVisible();
+    expect(response.ok()).toBe(true);
+  }
 
-  const playerPaddle = page.locator(".player-paddle");
   const normalPaddleBox = await playerPaddle.boundingBox();
   expect(normalPaddleBox).not.toBeNull();
 
-  await page.request.post("/api/test/scenario", {
-    data: {
-      scenario: "playerCapsule",
-      power: "shield"
-    }
-  });
-
+  await applyPowerScenario("shield");
   await pauseForDefense();
 
   await expect.poll(async () => {
@@ -85,20 +82,8 @@ test("collects the shield power-up and grows the player paddle", async ({ page }
   expect(shieldPaddleBox?.height).toBeGreaterThan(normalPaddleBox?.height ?? 0);
 
   await pauseForDefense();
-});
 
-test("collects the turbo power-up and stores it for the player", async ({ page }) => {
-  await page.goto("/");
-  await page.getByRole("button", { name: "Iniciar partida" }).click();
-  await expect(page.getByText("Estado: Jugando")).toBeVisible();
-
-  await page.request.post("/api/test/scenario", {
-    data: {
-      scenario: "playerCapsule",
-      power: "turbo"
-    }
-  });
-
+  await applyPowerScenario("turbo");
   await pauseForDefense();
 
   await expect.poll(async () => {
@@ -106,6 +91,19 @@ test("collects the turbo power-up and stores it for the player", async ({ page }
     const body = (await stateResponse.json()) as ApiGameResponse;
     return body.game.player.powers.find((power) => power.type === "turbo")?.active;
   }).toBe(true);
+
+  await page.request.post("/api/test/scenario", {
+    data: {
+      scenario: "playerNearWin"
+    }
+  });
+  await page.request.post("/api/game/tick", {
+    data: {}
+  });
+
+  await expect(page.getByText("Estado: Terminado")).toBeVisible();
+  await expect(page.getByText("Gano el jugador")).toBeVisible();
+  await expect(page.getByRole("button", { name: "Reiniciar partida" })).toBeVisible();
 
   await pauseForDefense();
 });
