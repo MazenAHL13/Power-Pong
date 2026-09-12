@@ -1,12 +1,16 @@
 import { useEffect, useState } from "react";
 import { movePlayer, resetGame, setGameDifficulty, startGame, tickGame } from "./api";
 import type { GameDifficulty, GameState } from "../../shared/types";
+import lightningBoltImage from "../../assets/lightning-bolt.png";
+import shieldImage from "../../assets/shield.png";
 import tennisBallImage from "../../assets/tennis-ball.png.webp";
 import "./styles/app.css";
 
 const COURT_WIDTH = 900;
 const COURT_HEIGHT = 520;
 const TICK_DELAY_MS = 50;
+const BALL_VISUAL_SCALE = 1.25;
+const CAPSULE_VISUAL_SCALE = 1.75;
 
 function App() {
   const [game, setGame] = useState<GameState | null>(null);
@@ -200,16 +204,19 @@ function App() {
                 style={{
                   left: `${(game.ball.position.x / COURT_WIDTH) * 100}%`,
                   top: `${(game.ball.position.y / COURT_HEIGHT) * 100}%`,
-                  width: `${((game.ball.radius * 2) / COURT_WIDTH) * 100}%`
+                  width: `${((game.ball.radius * 2 * BALL_VISUAL_SCALE) / COURT_WIDTH) * 100}%`
                 }}
               />
               {game.capsule !== null && (
-                <div
+                <img
                   className={`capsule capsule-${game.capsule.type}`}
+                  src={game.capsule.type === "shield" ? shieldImage : lightningBoltImage}
+                  alt=""
+                  draggable="false"
                   style={{
                     left: `${(game.capsule.position.x / COURT_WIDTH) * 100}%`,
                     top: `${(game.capsule.position.y / COURT_HEIGHT) * 100}%`,
-                    width: `${((game.capsule.radius * 2) / COURT_WIDTH) * 100}%`
+                    width: `${((game.capsule.radius * 2 * CAPSULE_VISUAL_SCALE) / COURT_WIDTH) * 100}%`
                   }}
                 />
               )}
