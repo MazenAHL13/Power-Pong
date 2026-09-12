@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { movePlayer, resetGame, setGameDifficulty, startGame, tickGame } from "./api";
 import type { GameDifficulty, GameState } from "../../shared/types";
+import tennisBallImage from "../../assets/tennis-ball.png.webp";
 import "./styles/app.css";
 
 const COURT_WIDTH = 900;
@@ -191,8 +192,11 @@ function App() {
                   height: `${(game.computer.paddle.height / COURT_HEIGHT) * 100}%`
                 }}
               />
-              <div
+              <img
                 className="ball"
+                src={tennisBallImage}
+                alt=""
+                draggable="false"
                 style={{
                   left: `${(game.ball.position.x / COURT_WIDTH) * 100}%`,
                   top: `${(game.ball.position.y / COURT_HEIGHT) * 100}%`,
@@ -225,6 +229,7 @@ function App() {
 
         {game?.status !== "playing" && (
           <div className="start-controls">
+            {resultText !== null && <p className="result-line">{resultText}</p>}
             <div className="instructions-card">
               <p>Usa W y S para mover tu paleta.</p>
               <p>Recoge capsulas azules/amarillas.</p>
@@ -254,7 +259,6 @@ function App() {
           </div>
         )}
 
-        {resultText !== null && <p className="result-line">{resultText}</p>}
         {error !== null && <p className="error-message">{error}</p>}
       </section>
     </main>
