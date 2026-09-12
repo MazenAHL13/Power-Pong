@@ -265,8 +265,17 @@ function ballTouchesPaddle(
   );
 }
 
+function calculatePaddleBounceVelocityY(ballY: number, paddle: PaddleState, maxBounceY: number): number {
+  const paddleCenterY = paddle.position.y + paddle.height / 2;
+  const hitOffset = (ballY - paddleCenterY) / (paddle.height / 2);
+  const limitedHitOffset = Math.min(Math.max(hitOffset, -1), 1);
+
+  return limitedHitOffset * maxBounceY;
+}
+
 export function moveBall(game: GameState): GameState {
   const ball = game.ball;
+  const difficultySettings = DIFFICULTY_SETTINGS[game.difficulty];
   let nextX = ball.position.x + ball.velocity.x;
   let nextY = ball.position.y + ball.velocity.y;
   let nextVelocityX = ball.velocity.x;
@@ -298,6 +307,11 @@ export function moveBall(game: GameState): GameState {
     // Player paddle sends the ball back to the right.
     nextX = game.player.paddle.position.x + game.player.paddle.width + ball.radius;
     nextVelocityX = Math.abs(ball.velocity.x);
+    nextVelocityY = calculatePaddleBounceVelocityY(
+      nextY,
+      game.player.paddle,
+      difficultySettings.ballSpeedY
+    );
 
     if (isPowerActive(game.player, "turbo")) {
       nextVelocityX *= TURBO_MULTIPLIER;
@@ -308,6 +322,11 @@ export function moveBall(game: GameState): GameState {
     // Computer paddle sends the ball back to the left.
     nextX = game.computer.paddle.position.x - ball.radius;
     nextVelocityX = -Math.abs(ball.velocity.x);
+    nextVelocityY = calculatePaddleBounceVelocityY(
+      nextY,
+      game.computer.paddle,
+      difficultySettings.ballSpeedY
+    );
 
     if (isPowerActive(game.computer, "turbo")) {
       nextVelocityX *= TURBO_MULTIPLIER;
