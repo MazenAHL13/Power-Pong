@@ -158,7 +158,7 @@ function App() {
   const startButtonText = game?.status === "finished" ? "Reiniciar partida" : "Iniciar partida";
   const statusText =
     game?.status === "ready"
-      ? "Listo"
+      ? "ready"
       : game?.status === "playing"
         ? "Jugando"
         : game?.status === "finished"
